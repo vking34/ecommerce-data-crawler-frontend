@@ -1,0 +1,97 @@
+@import "src/modules/shopDetail/style";
+
+img {
+  width: 100%;
+}
+i {
+  margin: 0 5px 0 0;
+}
+.dropdown-menu {
+  /* text-align: center; */
+  padding-left: 7px;
+}
+
+.navbar .navbar-menu-wrapper {
+  align-items: center !important;
+}
+
+.nav-table{
+  display: flex;
+  position: relative;
+  padding: 10px 15px 0;
+  margin-bottom: 15px;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-table .left-option{
+  display: flex;
+  justify-content: center;
+}
+.nav-table .right-option {
+  display: flex;
+  justify-content: center;
+}
+.sidebar .nav.sub-menu .nav-item .nav-link.active {
+  color: black;
+  /* background: transparent; */
+}
+.sidebar .nav.sub-menu .nav-item .nav-link {
+  color: black;
+  /* background: transparent; */
+}
+.sidebar .nav .nav-item.active > .nav-link .menu-title {
+  color: black;
+  font-family: "ubuntu-medium", sans-serif;
+}
+.sidebar .nav .nav-item.active > .nav-link i {
+  color: black;
+}
+.ant-btn {
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none !important;
+}
+
+.ant-pagination {
+  text-align: end;
+  margin: 10px !important;
+}
+
+.nav-option {
+  display: flex;
+  border: 1px solid ;
+  position: relative;
+  padding: 7px;
+}
+.about {
+  height: 39px;
+  padding: 10px 10px 3px;
+  margin-left: 15px;
+  border-bottom: 2px solid ;
+}
+.product {
+  border-bottom: 2px solid ;
+  height: 39px;
+  padding: 10px 10px 3px;
+}
+.approve-btn {
+  background-color: #32ef28 !important;
+  position: absolute !important;
+  right: 10px;
+  top: 11px;
+}
+@include shopDetail;
+
+@media only screen and (max-width: 768px) {
+  .nav-table{
+    flex-wrap: wrap;
+  }
+  .nav-table .left-option{
+    flex-wrap: wrap;
+
+  }
+  .nav-table .right-option {
+    flex-wrap: wrap;
+  }
+}
+
