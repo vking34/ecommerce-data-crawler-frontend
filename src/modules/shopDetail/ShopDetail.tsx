@@ -27,7 +27,7 @@ export default class ShopDetail extends Component {
         <div className="nav-option" style={{backgroundColor: "#fff"}}>
           <div className="about" style={{borderColor: "#f54b24", color: "#F54b24"}}>ABOUT</div>
           <div className="product" style={{borderColor: "#000", color: "#000"}}>PRODUCT</div>
-          <Button type="primary" className="approve-btn">
+          <Button type="primary" className="approve-btn-detail">
             Approve Shop
           </Button>
         </div>

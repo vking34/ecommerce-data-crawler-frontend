@@ -1,27 +1,37 @@
+import { observable } from "mobx";
+import { observer } from "mobx-react";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+@observer
 export default class Menu extends Component {
+  private menuRef =React.createRef<HTMLDivElement>();
+  @observable showMenu = true;
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickMenu);
+  }
+  
+  componentWillMount() {
+    // document.removeEventListener('click', this.handleClickMenu);
+  }
+  
+  handleClickMenu = (e: any) => {
+    const {target} = e;
+    const node = this.menuRef.current;
+    console.log(" show : ", this.showMenu);
+    if (node) {
+        if (!node.contains(target)) {
+            this.showMenu = false;
+          }else{
+          this.showMenu = true;
+        }
+    }
+  }
+
   render() {
     return (
-      <nav className="sidebar sidebar-offcanvas" id="sidebar">
+      <nav className={!this.showMenu ? "sidebar sidebar-offcanvas menu-main" : " menu-main sidebar sidebar-offcanvas active"} ref={this.menuRef} style={{backgroundColor: "#181824"}}>
         <ul className="nav">
-          <li className="nav-item nav-profile">
-            <a href="/" className="nav-link">
-              <div className="nav-profile-image">
-                <img src="/logo.png" alt="profile" />
-                <span className="login-status online" />
-                {/*change to offline or busy as needed*/}
-              </div>
-              <div className="nav-profile-text d-flex flex-column">
-                <span className="font-weight-bold mb-2">V_Dev</span>
-                <span className="text-secondary text-small">
-                  Project Manager
-                </span>
-              </div>
-              <i className="mdi mdi-bookmark-check text-success nav-profile-badge" />
-            </a>
-          </li>
           <li className="nav-item">
             <Link className="nav-link" to="/shop-detail">
               <span className="menu-title">Shop Detail</span>
@@ -45,11 +55,6 @@ export default class Menu extends Component {
                 <li className="nav-item">
                   <Link className="nav-link" to="/crawl-seller">
                     Crawl Seller
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/shop-state">
-                    Shop State
                   </Link>
                 </li>
                 <li className="nav-item">

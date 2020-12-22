@@ -1,0 +1,24 @@
+@mixin menu-main {
+  .menu-main {
+    .nav-item{
+      background-color: #181824;
+    }
+    .nav-item.hover-open {
+      background-color: #FCFCFC;
+    }
+    // .hover-open > .menu-title , .sub-menu {
+    //   background-color: #ed9aaa;
+    //   color: #000 !important;
+    // }
+    // .hover-open > .nav-link {
+    //   background-color: #ed9aaa;
+    // } 
+    &.sidebar .nav-item:hover .nav-item {
+      background: #FCFCFC;
+    }
+    // &.sidebar .nav:not(.sub-menu) > .nav-item:hover:not(.nav-category):not(.nav-profile) > .nav-link {
+    //   color: #29323d;
+    // }
+    
+  }
+}

@@ -9,6 +9,7 @@ import moment from 'moment';
 import { rawSellerStore } from "./rawSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Moment } from "../../common/Moment";
+import { Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 // import { DateRangePicker } from "rsuite";
 
@@ -65,11 +66,16 @@ export default class RawSeller extends Component<RawSellerProps, any> {
   // }
   columns: any = [
     { title: "Id", dataIndex: "_id", key: "_id" },
-    { title: "Name", dataIndex: "name", key: "name" },
-    {
-      title: "Phone Numbers",
-      dataIndex: "phone_numbers",
-      key: "phone_numbers",
+    { title: "Name", dataIndex: "name", key: "name" ,
+      render: (name: string[]) => {
+        <>
+          <Link to= "/shop-detail">
+            <p>{name}</p>
+          </Link>
+        </>
+      }
+    },
+    { title: "Phone Numbers",dataIndex: "phone_numbers", key: "phone_numbers",
       render: (phone_numbers: string[]) => (
         <>
           {phone_numbers.length < 1 ? <span> Chưa có số điện thoại </span> :
@@ -105,26 +111,32 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     rawSellerStore.currentPage = page;
   }
   filterDate = (e: any) => {
-    console.log(e);
     rawSellerStore.startDate = Moment.getDate(e[0]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
     rawSellerStore.endDate = Moment.getDate(e[1]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
-    console.log( "date : " , rawSellerStore.startDate , " -> ", rawSellerStore.endDate);
+    // console.log( "date : " , rawSellerStore.startDate , " -> ", rawSellerStore.endDate);
   }
   render() {
     return (
       <React.Fragment>
         <div className="nav-table">
           <div className="left-option">
-            <div className="search-field d-none d-md-block" style={{height: "33px"}}>
+            <div className="search-field d-none d-md-block" style={{height: "33px", margin: "10px"}}>
               <form className="d-flex align-items-center h-100" action="#">
                 <div className="input-group">
                   <div className="input-group-prepend bg-transparent">
                     <i className="input-group-text border-0 mdi mdi-magnify" style={{ backgroundColor: "#F2EDF3" }}/>
                   </div>
-                  <input type="text" className="form-control bg-transparent border-0" placeholder="Search projects"/>
+                  <input type="text" className="form-control bg-transparent border-0" placeholder="Search ..."/>
                 </div>
               </form>
             </div>
+            <RangePicker
+              style={{height: "33px", margin: "10px"}}
+              value={[moment(rawSellerStore.startDate, "YYYY/MM/DD"), moment(rawSellerStore.endDate, "YYYY/MM/DD")]}
+              // value={[moment('2015/01/01', "YYYY/MM/DD"), moment('2015/01/01', "YYYY/MM/DD")]}
+              format={"YYYY/MM/DD"}
+              onChange={this.filterDate}
+            />
             <Dropdown overlay={this.menu}>
               <Button>
                 {rawSellerStore.market} <DownOutlined />
@@ -140,28 +152,20 @@ export default class RawSeller extends Component<RawSellerProps, any> {
                 {rawSellerStore.status} <DownOutlined />
               </Button>
             </Dropdown>
-            <RangePicker
-              style={{height: "33px"}}
-              value={[moment(rawSellerStore.startDate, "YYYY-MM-DD"), moment(rawSellerStore.endDate, "YYYY-MM-DD")]}
-              // value={[moment('2015/01/01', "YYYY/MM/DD"), moment('2015/01/01', "YYYY/MM/DD")]}
-              format={"YYYY-MM-DD"}
-              onChange={this.filterDate}
-            />
-            <Button type="primary" style={{backgroundColor: "#f54b24",border: "none",margin: "0 20px"}}>
+
+            <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
               Filter
             </Button>
-            <i className="fas fa-download" style={{fontSize: "30px", margin: "0 15px", cursor: "pointer"}}></i>
+            <i className="fas fa-download" style={{fontSize: "30px", cursor: "pointer"}}></i>
           </div>
           <div className="right-option">
-            <Button type="primary" size={"large"} style={{border: "none",margin: "0 10px",backgroundColor: "#42ed2f",}}>
+            <Button type="primary" size={"large"} style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}}>
               Crawl
             </Button>
           </div>
         </div>
-        <Table dataSource={rawSellerStore.data} columns={this.columns} bordered
-          pagination={false}
-        />
-        <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} />;
+        <Table dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
+        <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} />
       </React.Fragment>
     );
   }

@@ -101,13 +101,13 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
       <React.Fragment>
         <div className="nav-table">
           <div className="left-option">
-            <div className="search-field d-none d-md-block" style={{height: "33px"}}>
+            <div className="search-field d-none d-md-block" style={{height: "33px", margin: "10px"}}>
               <form className="d-flex align-items-center h-100" action="#">
                 <div className="input-group">
                   <div className="input-group-prepend bg-transparent">
                     <i className="input-group-text border-0 mdi mdi-magnify" style={{ backgroundColor: "#F2EDF3" }}/>
                   </div>
-                  <input type="text" className="form-control bg-transparent border-0" placeholder="Search projects"/>
+                  <input type="text" className="form-control bg-transparent border-0" placeholder="Search ..."/>
                 </div>
               </form>
             </div>
@@ -121,29 +121,24 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
                 {crawlSellerStore.status} <DownOutlined />
               </Button>
             </Dropdown>
-            <Button type="primary" style={{backgroundColor: "#f54b24",border: "none",margin: "0px 15px",}}>
+            <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
               Filter
             </Button>
           </div>
           <div className="right-option">
             <Link to="/crawling-addition">
-              <Button type="primary" size={"large"} style={{ margin: "0 10px", width: "99px" }}>
+              <Button type="primary" size={"large"} style={{ margin: "10px", width: "99px" }}>
                 Add
               </Button>
             </Link>
-            <Button type="primary" size={"large"} style={{border: "none",margin: "0 10px",backgroundColor: "#42ed2f",}}>
+            <Button type="primary" size={"large"} style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}}>
               Approve
             </Button>
-            <i className="fas fa-download" style={{fontSize: "30px", margin: "3px 15px"}}></i>
+            <i className="fas fa-download" style={{fontSize: "30px", margin: "10px"}}></i>
           </div>
         </div>
         <p style={{margin: "10px"}}>Total : 12399 shops</p>
-        <Table
-          dataSource={crawlSellerStore.data}
-          columns={this.columns}
-          bordered
-          pagination={false}
-        />
+        <Table dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
         <Pagination current={crawlSellerStore.currentPage} onChange={(page: number) => crawlSellerStore.currentPage = page} total={crawlSellerStore.totalPage * 10} />
       </React.Fragment>
     );
