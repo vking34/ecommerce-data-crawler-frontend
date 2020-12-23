@@ -24,7 +24,7 @@ class CrawlingStore {
   dataToSend = () => {
     for (const shop in this.shops) {
       this.data.push(this.shops[shop]);
-     };
+    };
   }
 }
 

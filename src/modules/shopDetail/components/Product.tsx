@@ -1,63 +1,18 @@
-import React, { Component } from "react";
-import { Pagination, Table } from "antd";
-import { observer } from "mobx-react";
-import {DownOutlined,UserOutlined} from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
+import { DownOutlined } from '@ant-design/icons';
+import { Button, Dropdown, Menu, Pagination, Table } from 'antd';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
 
-// import myShopStateParam from "./components/myShopStateParam";
-import { crawlSellerStore } from "./crawlSellerStore";
-import { callApi } from "../../utils/callAPI";
-import { Link } from "react-router-dom";
-
-interface CrawlSellerProps {
-  history: { push: (path: string) => any };
-  location: { search: string };
-}
-@observer
-export default class CrawlSeller extends Component<CrawlSellerProps, any> {
-  menu: any = (
-    <Menu>
-      <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
-        1st menu item
-      </Menu.Item>
-      <Menu.Item key="2" icon={<i className="mdi mdi-crosshairs-gps"/>}>
-        2nd menu item
-      </Menu.Item>
-      <Menu.Item key="3" icon={<i className="mdi mdi-crosshairs-gps"/>}>
-        3rd menu item
-      </Menu.Item>
-    </Menu>
-  );
-
-  componentDidMount() {
-    this.requestAPI();
-  }
-  componentDidUpdate(prevProps: Readonly<CrawlSellerProps>,prevState: Readonly<any>,snapshot?: any) {
-    if (prevProps.location.search !== this.props.location.search) {
-      this.requestAPI();
-    }
-  }
-
-  requestAPI = async () => {
-    // if(this.props.location.search){
-    //   const params = new myCrawlerSellerParam(this.props.location.search)
-    //   crawlSellerStore.state = params.getState;
-    const resultApi = await callApi(
-      `v1/crawlers/shopee/shops`,
-      "GET",
-      {},
-      false
-    );
-    if (resultApi.result.status === 200) {
-      crawlSellerStore.getDate(resultApi.result.data.data);
-      crawlSellerStore.data = resultApi.result.data.data;
-      crawlSellerStore.totalPage = resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize;
-      // console.log("data : ", resultApi.result.data.data);
-    }
-  };
+export default class Product extends Component {
 
   columns: any = [
-    { title: "Id", dataIndex: "_id", key: "_id" },
+    { title: "Image", dataIndex: "img", key: "img", width: "100px",
+      render: (src: string) => (
+        <>
+          <img src={src} alt="img" style={{width: "79%"}}/>
+        </>
+      )
+    },
     { title: "Name", dataIndex: "name", key: "name" },
     { title: "Phone Numbers",dataIndex: "phone_numbers", key: "phone_numbers",
       render: (phone_numbers: string[]) => (
@@ -90,9 +45,9 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         </>
       ),
     },
-    { title: "Products Quantity", dataIndex: "quantity", key: "quantity" },
-    { title: "State", dataIndex: "state", key: "state" },
-    { title: "Chozoi Status", dataIndex: "state", key: "state" },
+    { title: "Category", dataIndex: "category", key: "category" },
+    { title: "Flash Sale", dataIndex: "flash", key: "flash" },
+    { title: "Status", dataIndex: "status", key: "status" },
     { title: "Update At", dataIndex: "updated_at", key: "updated_at" },
     { title: "Action", dataIndex:"action", key: "action",
       render: (id: any) => (
@@ -107,23 +62,45 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   ];
   data = [
     {
-      _id: '1',
-      name: 'Mike',
-      phone_numbers: ["0985299551"],
-      quantity: 32,
-      state: "DONE",
-      updated_at: "23/12/2020",
-    },
-    {
-      _id: '2',
+      img: '/assets/img/images.jpg',
       name: 'Mike',
       phone_numbers: [],
-      quantity: 32,
-      state: "DONE",
+      category: 32,
+      flash: "DONE",
       updated_at: "23/12/2020",
-      action: ["1"]
+      status: "Approve"
+    },
+    {
+      img: '/assets/img/images.jpg',
+      name: 'Mike',
+      phone_numbers: [],
+      category: 32,
+      flash: "DONE",
+      updated_at: "23/12/2020",
+      status: "Approve"
     },
   ];
+  menu: any = (
+    <Menu>
+      <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
+        1st menu item
+      </Menu.Item>
+      <Menu.Item key="2" icon={<i className="mdi mdi-crosshairs-gps"/>}>
+        2nd menu item
+      </Menu.Item>
+      <Menu.Item key="3" icon={<i className="mdi mdi-crosshairs-gps"/>}>
+        3rd menu item
+      </Menu.Item>
+    </Menu>
+  );
+  onSelectChange = (selectedRowKeys: any) => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    // this.setState({ selectedRowKeys });
+  };
+  rowSelection: any = {
+    // selectedRowKeys,
+    onChange: this.onSelectChange,
+  };
 
   render() {
     return (
@@ -142,12 +119,12 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
             </div>
             <Dropdown overlay={this.menu}>
               <Button >
-                {crawlSellerStore.market} <DownOutlined />
+                FlashSale <DownOutlined />
               </Button>
             </Dropdown>
             <Dropdown overlay={this.menu}>
               <Button >
-                {crawlSellerStore.status} <DownOutlined />
+                Status <DownOutlined />
               </Button>
             </Dropdown>
             <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
@@ -155,21 +132,14 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
             </Button>
           </div>
           <div className="right-option">
-            <Link to="/crawling-addition">
-              <Button type="primary" style={{ margin: "10px", width: "99px" }}>
-                Add
-              </Button>
-            </Link>
             <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}}>
               Approve
             </Button>
-            <i className="fas fa-download" style={{fontSize: "30px", margin: "10px"}}></i>
           </div>
         </div>
-        <p style={{margin: "10px"}}>Total : 12399 shops</p>
-        <Table dataSource={this.data} columns={this.columns} bordered pagination={false}/>
+        <Table rowSelection={this.rowSelection}  dataSource={this.data} columns={this.columns} bordered pagination={false}/>
         {/* <Table dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/> */}
-        <Pagination current={crawlSellerStore.currentPage} onChange={(page: number) => crawlSellerStore.currentPage = page} total={crawlSellerStore.totalPage * 10} />
+        <Pagination current={1} onChange={(page: number) => console.log(page)} total={2 * 10} />
       </React.Fragment>
     );
   }

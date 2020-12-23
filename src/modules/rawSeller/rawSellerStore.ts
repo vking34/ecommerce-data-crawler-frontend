@@ -10,15 +10,16 @@ class RawSellerStore {
   @observable market: string = "Total Market";
   @observable phoneNumber: string = "Phone Number";
   @observable status: string = "Status";
-  @observable pageSize: number = 1;
+  @observable pageSize: number = 10;
   @observable totalPage: number = 1;
   @observable currentPage: number = 1;
   @observable endDate: string = Moment.getDate(this.currentDate.getTime(),"yyyy-mm-dd");
   @observable startDate: string = Moment.getDate(new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getTime(), "yyyy-mm-dd");
-  
+  @observable selectedRowKeys: any = [];
   getDate = (data: any) => {
     data.map((item: any, key: number) => {
       // var dateStr = JSON.parse("\"2014-01-01T23:28:56.782Z\"");
+      item.key = item._id;
       var str = "\"" + item.updated_at + "\"";
       var dateStr = JSON.parse(str);
       var date = new Date(dateStr);

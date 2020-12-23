@@ -14,5 +14,18 @@ export default class myRawSellerParam extends URLSearchParams {
     }
     return state;
   }
-
+  get getPage(): number{
+    let page: any = this.get("page") || null ;
+    if(page === undefined || page == null){
+      page = 1;
+    }
+    return parseInt(page);
+  }
+  get getLimit(): number{
+    let limit: any = this.get("limit") || null ;
+    if(limit === undefined || limit == null){
+      limit = 1;
+    }
+    return parseInt(limit);
+  }
 }

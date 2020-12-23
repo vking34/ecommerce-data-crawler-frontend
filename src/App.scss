@@ -15,14 +15,23 @@ i.fa-download {
 .navbar .navbar-menu-wrapper {
   align-items: center !important;
 }
-
+.about , .product {
+  border-color: #000;
+  color: #000;
+  cursor: pointer;
+}
+.about.active , .product.active {
+  cursor: pointer;
+  border-color: #f54b24;
+  color: #f54b24;
+}
 .nav-table{
   display: flex;
   position: relative;
   padding: 10px 15px 0;
   margin-bottom: 15px;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
 }
 .search-field {
   background-color: #fff;
@@ -102,38 +111,25 @@ nav a{
 .navbar .navbar-brand-wrapper {
   background-color: #6acff7;
 }
-.sidebar .nav .nav-item.active {
-  background: #181824;
-  // opacity: 0.7;
+.dropdown .dropdown-menu .dropdown-item:hover  {
+  background-color: #1da1f2;
 }
-.sidebar .nav.sub-menu .nav-item .nav-link {
-  color: #1da1f2;
-  /* background: transparent; */
-}
-.sidebar .nav.sub-menu .nav-item .nav-link.active {
-  color: #1da1f2;
-  /* background: transparent; */
-}
-.sidebar .nav .nav-item .nav-link .menu-title  {
-  color: #1da1f2
-}
-.sidebar .nav .nav-item:hover {
-  background: #bfbbbb;
-  // background: #FCFCFC;
-}
-.sidebar .nav-item:hover .nav.sub-menu .nav-item {
-  background-color: #bfbbbb;
-}
+
 @include shopDetail;
 @include menu-main;
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 1440px) {
 
   .nav-table .left-option{
     flex-wrap: wrap;
   }
   .nav-table .right-option {
     flex-wrap: wrap;
+  }
+}
+@media only screen and (max-width: 991px) {
+  .navbar .navbar-brand-wrapper {
+    background-color: #eeeeee;
   }
 }
 @media only screen and (max-width: 768px) {

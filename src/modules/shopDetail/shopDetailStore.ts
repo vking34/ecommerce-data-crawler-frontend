@@ -13,8 +13,9 @@ class ShopDetailStore {
   @observable edit: boolean = false; 
   @observable infoSeller : any = {};
   @observable errorInfo: any = {};
-
-  editDetail = () => {
+  @observable showAbout: boolean = true;
+  
+  editDetail = () => { 
     this.edit = !this.edit;
   }
 

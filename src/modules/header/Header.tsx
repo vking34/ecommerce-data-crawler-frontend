@@ -2,23 +2,27 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import {menuStore} from "../menu/menuStore";
+
 export default class Header extends Component {
+  private checkHeader =React.createRef<HTMLDivElement>();
 
   render() {
     return (
-      <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <nav ref={this.checkHeader} className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style={{backgroundColor: "#EEEEEE"}}>
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <Link className="navbar-brand brand-logo" to="/">
             {/* <img src="/assets/images/logo.svg" alt="logo" />  */}
             <h1>Chozoi MCG</h1>
           </Link>
-          <a className="navbar-brand brand-logo-mini" href="index.html">
+          <a className="navbar-brand brand-logo-mini" href="/">
             <img style={{ width: "37%" }} src="/logo.png" alt="logo" />
           </a>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
           <button className="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span className="mdi mdi-menu" />
+            {/* <span className="mdi mdi-menu" onClick={menuStore.changeShowMenu}/> */}
           </button>
           <ul className="navbar-nav navbar-nav-right">
             <li className="nav-item nav-profile dropdown">
@@ -44,7 +48,8 @@ export default class Header extends Component {
             </li>
           </ul>
           <button className="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-            <span className="mdi mdi-menu" />
+            {/* <span className="mdi mdi-menu"/> */}
+            <span className="mdi mdi-menu" onClick={menuStore.changeShowMenu} />
           </button>
         </div>
       </nav>

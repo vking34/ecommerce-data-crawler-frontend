@@ -2,35 +2,17 @@ import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { menuStore } from "./menuStore";
+import { rawSellerStore } from './../rawSeller/rawSellerStore';
 
 @observer
 export default class Menu extends Component {
   private menuRef =React.createRef<HTMLDivElement>();
-  @observable showMenu = true;
-  componentDidMount() {
-    document.addEventListener('click', this.handleClickMenu);
-  }
-  
-  componentWillMount() {
-    // document.removeEventListener('click', this.handleClickMenu);
-  }
-  
-  handleClickMenu = (e: any) => {
-    const {target} = e;
-    const node = this.menuRef.current;
-    console.log(" show : ", this.showMenu);
-    if (node) {
-        if (!node.contains(target)) {
-            this.showMenu = false;
-          }else{
-          this.showMenu = true;
-        }
-    }
-  }
+  urlRawSeller = `/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
 
   render() {
     return (
-      <nav className={!this.showMenu ? "sidebar sidebar-offcanvas menu-main" : " menu-main sidebar sidebar-offcanvas active"} ref={this.menuRef} style={{backgroundColor: "#181824"}}>
+      <nav className={!menuStore.showMenu ? "sidebar sidebar-offcanvas menu-main" : " menu-main sidebar sidebar-offcanvas active"} ref={this.menuRef} style={{backgroundColor: "#181824"}}>
         <ul className="nav">
           <li className="nav-item">
             <Link className="nav-link" to="/shop-detail">
@@ -48,7 +30,7 @@ export default class Menu extends Component {
             <div className="collapse show" id="list-seller">
               <ul className="nav flex-column sub-menu">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/raw-seller">
+                  <Link className="nav-link" to={this.urlRawSeller}>
                     Raw Seller
                   </Link>
                 </li>

@@ -5,7 +5,7 @@ import {DownOutlined} from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 import moment from 'moment';
 
-// import myRawSellerParam from "./components/myRawSellerParam";
+import myRawSellerParam from "./components/myRawSellerParam";
 import { rawSellerStore } from "./rawSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Moment } from "../../common/Moment";
@@ -45,40 +45,50 @@ export default class RawSeller extends Component<RawSellerProps, any> {
   }
 
   requestAPI = async () => {
-    // if(this.props.location.search){
-    //   const params = new myCrawlerSellerParam(this.props.location.search)
-    //   rawSellerStore.state = params.getState;
-    const resultApi = await callApi(
-      `v1/crawlers/shopee/shops`,
-      "GET",
-      {},
-      false
-      );
-    if (resultApi.result.status === 200) {
-      rawSellerStore.getDate(resultApi.result.data.data);
-      rawSellerStore.data = resultApi.result.data.data;
-      rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
-      // console.log("data : ", resultApi.result.data.pagination.total_elements);
+    if(this.props.location.search){
+      const params = new myRawSellerParam(this.props.location.search)
+      rawSellerStore.state = params.getState;
+      rawSellerStore.currentPage = params.getPage;
+      rawSellerStore.pageSize = params.getLimit;
+      const resultApi = await callApi(
+        `v1/crawlers/shopee/shops/raw?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
+        "GET",
+        {},
+        false
+        );
+      if (resultApi.result.status === 200) {
+        rawSellerStore.getDate(resultApi.result.data.data);
+        rawSellerStore.data = resultApi.result.data.data;
+        rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
+        // console.log("data : ", resultApi.result.data.pagination.total_elements);
+      }
     }
   };
   // handlPage = (e: any)=> {
   //   console.log("page : ", e);
-  // }
+  // } 
   columns: any = [
-    { title: "Id", dataIndex: "_id", key: "_id" },
-    { title: "Name", dataIndex: "name", key: "name" ,
-      render: (name: string[]) => {
+    { title: "Id", dataIndex: "_id", },
+    { title: "Username", dataIndex: "account",
+      render : (account: any) => (
+        <>
+          <p>{account.username}</p>
+        </>
+      )
+    },
+    { title: "Name Shop", dataIndex: "name",
+      render: (name: string) => (
         <>
           <Link to= "/shop-detail">
             <p>{name}</p>
           </Link>
         </>
-      }
+      )
     },
-    { title: "Phone Numbers",dataIndex: "phone_numbers", key: "phone_numbers",
+    { title: "Phone Numbers",dataIndex: "phone_numbers",
       render: (phone_numbers: string[]) => (
         <>
-          {phone_numbers.length < 1 ? <span> Chưa có số điện thoại </span> :
+          {phone_numbers.length < 1 ? <span  style={{marginLeft: "10px"}}> Chưa có số điện thoại </span> :
           <div className="dropdown show-dropdown option-main open">
             <span data-toggle="dropdown" aria-expanded="true">
               <i className="fas fa-phone" style={{margin: "7px 17px", color: "#f54b24"}}></i>
@@ -102,18 +112,61 @@ export default class RawSeller extends Component<RawSellerProps, any> {
         </>
       ),
     },
-    { title: "State", dataIndex: "state", key: "state" },
-    { title: "Update At", dataIndex: "updated_at", key: "updated_at" },
+    { title: "Update At", dataIndex: "updated_at"},
+    { title: "Crawl Status", dataIndex: "status"},
   ];
+  // data = [
+  //   {
+  //     key: "1",
+  //     _id: '1',
+  //     name: 'Mike',
+  //     phone_numbers: ["0985299551"],
+  //     state: "DONE",
+  //     updated_at: "23/12/2020",
+  //   },
+  //   {
+  //     key: "5",
+  //     _id: '5',
+  //     name: 'Mike',
+  //     phone_numbers: [],
+  //     state: "DONE",
+  //     updated_at: "23/12/2020",
+  //     action: ["1"]
+  //   },
+  // ];
 
   onChange = (page: number) => {
     // console.log("page : " , page);
     rawSellerStore.currentPage = page;
+    this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`)
   }
   filterDate = (e: any) => {
     rawSellerStore.startDate = Moment.getDate(e[0]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
     rawSellerStore.endDate = Moment.getDate(e[1]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
     // console.log( "date : " , rawSellerStore.startDate , " -> ", rawSellerStore.endDate);
+  }
+  onSelectChange = (selectedRowKeys:any, selectedRows:any) => {
+    // console.log("selectedRowKeys : ", selectedRowKeys);
+    // console.log('selectedRows: ', selectedRows);
+    rawSellerStore.selectedRowKeys.push(selectedRows[0]?._id);
+    // console.log("selectedRowKeys store : ", rawSellerStore.selectedRowKeys);
+    // rawSellerStore.selectedRowKeys = selectedRowKeys;
+  };
+  rowSelection: any = {
+    // selectedRowKey: rawSellerStore.selectedRowKeys,
+    onChange: (selectedRowKeys:any, selectedRows:any) => {
+      console.log("selectedRowKeys : ", selectedRowKeys);
+      console.log('selectedRows: ', selectedRows);
+      // console.log("selectedRowKeys store : ", rawSellerStore.selectedRowKeys);
+      // rawSellerStore.selectedRowKeys = selectedRowKeys;
+    },
+    getCheckboxProps: (record: any) => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+  tet = () => {
+    this.props.history.push("/crawling-addition");
   }
   render() {
     return (
@@ -159,12 +212,13 @@ export default class RawSeller extends Component<RawSellerProps, any> {
             <i className="fas fa-download" style={{fontSize: "30px", cursor: "pointer"}}></i>
           </div>
           <div className="right-option">
-            <Button type="primary" size={"large"} style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}}>
+            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.tet}>
               Crawl
             </Button>
           </div>
         </div>
-        <Table dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
+        {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false} /> */}
+        <Table rowSelection={{...this.rowSelection}} dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
         <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} />
       </React.Fragment>
     );

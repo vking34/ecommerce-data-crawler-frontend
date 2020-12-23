@@ -29,17 +29,19 @@ export default class Crawling extends Component<CrawlingProps, any> {
   requestAPI = async () => {
     this.dataSend(crawlingStore.shops);
     crawlingStore.dataToSend();
-    // console.log("data : ", this.data);
-    // console.log("shop : ", crawlingStore.shops);
-    
+    console.log("data : ", this.data);
+    // console.log("shop : ", crawlingStore.data);
+    // return;
     // if(this.props.location.search){
     //   const params = new myCrawlerSellerParam(this.props.location.search)
     //   crawlingStore.state = params.getState;
     const resultApi = await callApi(
       `v1/crawlers/shopee/shops`,
       "POST",
-      // this.data,
-      crawlingStore.data,
+      {
+        shops: this.data
+        // crawlingStore.data,
+      },
       false
       );
     if (resultApi.result.status === 200) {
@@ -49,8 +51,9 @@ export default class Crawling extends Component<CrawlingProps, any> {
       // console.log("data : ", resultApi.result.data);
       // this.props.history.push("/crawling-addition");
       notify.show(` Crawling shops ... ! `, "success");
-      window.location.reload();
-      
+      crawlingStore.shops = {};
+      crawlingStore.itemsMap = [1];
+      crawlingStore.items = 1;
     }
   };
   change = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -68,8 +71,8 @@ export default class Crawling extends Component<CrawlingProps, any> {
   handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name , value} = event.target; 
     crawlingStore.updateShops(name, value);
-    console.log("update : ", name , " : ", value);
-    console.log("shop text : ", crawlingStore.shops[1]); 
+    // console.log("update : ", name , " : ", value);
+    // console.log("shop text : ", crawlingStore.shops[1]); 
   }
   propsUpload: any = {
     name: 'file',
