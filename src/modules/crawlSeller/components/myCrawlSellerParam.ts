@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { crawlSellerStore } from '../crawlSellerStore';
 // import { Moment } from '../../../common/Moment';
 
@@ -13,6 +14,20 @@ export default class myCrawlSellerParam extends URLSearchParams {
       state = "all";
     }
     return state;
+  }
+  get getPage(): number{
+    let page: any = this.get("page") || null ;
+    if(page === undefined || page == null){
+      page = 1;
+    }
+    return parseInt(page);
+  }
+  get getLimit(): number{
+    let limit: any = this.get("limit") || null ;
+    if(limit === undefined || limit == null){
+      limit = 1;
+    }
+    return parseInt(limit);
   }
 
 }

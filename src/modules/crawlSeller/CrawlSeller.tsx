@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import {DownOutlined,UserOutlined} from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 
-// import myShopStateParam from "./components/myShopStateParam";
+import myCrawlSellerParam from "./components/myCrawlSellerParam";
 import { crawlSellerStore } from "./crawlSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Link } from "react-router-dom";
@@ -39,27 +39,31 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   }
 
   requestAPI = async () => {
-    // if(this.props.location.search){
-    //   const params = new myCrawlerSellerParam(this.props.location.search)
-    //   crawlSellerStore.state = params.getState;
-    const resultApi = await callApi(
-      `v1/crawlers/shopee/shops`,
-      "GET",
-      {},
-      false
-    );
-    if (resultApi.result.status === 200) {
-      crawlSellerStore.getDate(resultApi.result.data.data);
-      crawlSellerStore.data = resultApi.result.data.data;
-      crawlSellerStore.totalPage = resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize;
-      // console.log("data : ", resultApi.result.data.data);
+    if(this.props.location.search){
+      const params = new myCrawlSellerParam(this.props.location.search)
+      crawlSellerStore.state = params.getState;
+      crawlSellerStore.currentPage = params.getPage;
+      crawlSellerStore.pageSize = params.getLimit;
+      const resultApi = await callApi(
+        `v1/crawlers/shopee/shops/convertations?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`,
+        "GET",
+        {},
+        false
+      );
+      if (resultApi.result.status === 200) {
+        crawlSellerStore.getDate(resultApi.result.data.data);
+        crawlSellerStore.data = resultApi.result.data.data;
+        crawlSellerStore.totalPage = resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize;
+        // console.log("data : ", resultApi.result.data.data);
+      }
     }
   };
 
   columns: any = [
-    { title: "Id", dataIndex: "_id", key: "_id" },
-    { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Phone Numbers",dataIndex: "phone_numbers", key: "phone_numbers",
+    { title: "Id", dataIndex: "_id" },
+    { title: "Username", dataIndex: "username"},
+    { title: "Shop", dataIndex: "name"},
+    { title: "Phone Numbers",dataIndex: "phone_numbers",
       render: (phone_numbers: string[]) => (
         <>
           {phone_numbers.length > 0 ?
@@ -90,11 +94,11 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         </>
       ),
     },
-    { title: "Products Quantity", dataIndex: "quantity", key: "quantity" },
-    { title: "State", dataIndex: "state", key: "state" },
-    { title: "Chozoi Status", dataIndex: "state", key: "state" },
-    { title: "Update At", dataIndex: "updated_at", key: "updated_at" },
-    { title: "Action", dataIndex:"action", key: "action",
+    { title: "Products Quantity", dataIndex: "quantity"},
+    { title: "State", dataIndex: "state" },
+    { title: "Chozoi Status", dataIndex: "state"},
+    { title: "Update At", dataIndex: "updated_at" },
+    { title: "Action", dataIndex:"action",
       render: (id: any) => (
         // <i className="fas fa-pencil-alt"></i>
         <>
@@ -105,26 +109,48 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
       )
     },
   ];
-  data = [
-    {
-      _id: '1',
-      name: 'Mike',
-      phone_numbers: ["0985299551"],
-      quantity: 32,
-      state: "DONE",
-      updated_at: "23/12/2020",
-    },
-    {
-      _id: '2',
-      name: 'Mike',
-      phone_numbers: [],
-      quantity: 32,
-      state: "DONE",
-      updated_at: "23/12/2020",
-      action: ["1"]
-    },
-  ];
-
+  // data = [
+  //   {
+  //     _id: '1',
+  //     name: 'Mike',
+  //     phone_numbers: ["0985299551"],
+  //     quantity: 32,
+  //     state: "DONE",
+  //     updated_at: "23/12/2020",
+  //   },
+  //   {
+  //     _id: '2',
+  //     name: 'Mike',
+  //     phone_numbers: [],
+  //     quantity: 32,
+  //     state: "DONE",
+  //     updated_at: "23/12/2020",
+  //     action: ["1"]
+  //   },
+  // ];
+  onChange = (page: number) => {
+    crawlSellerStore.currentPage = page;
+    this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+  }
+  rowSelection: any = {
+    onChange: (selectedRowKeys:any, selectedRows:any) => {
+      crawlSellerStore.selectedRowKeys = selectedRowKeys;
+    }
+  };
+  handleApprove = async () => {
+    // const resultApi = await callApi(
+    //   `v1/crawlers/shopee/shops/raw?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
+    //   "POST",
+    //   {},
+    //   false
+    //   );
+    // if (resultApi.result.status === 200) {
+    //   rawSellerStore.getDate(resultApi.result.data.data);
+    //   rawSellerStore.data = resultApi.result.data.data;
+    //   rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
+    //   // console.log("data : ", resultApi.result.data.pagination.total_elements);
+    // }
+  }
   render() {
     return (
       <React.Fragment>
@@ -160,16 +186,16 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
                 Add
               </Button>
             </Link>
-            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}}>
+            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.handleApprove}>
               Approve
             </Button>
             <i className="fas fa-download" style={{fontSize: "30px", margin: "10px"}}></i>
           </div>
         </div>
         <p style={{margin: "10px"}}>Total : 12399 shops</p>
-        <Table dataSource={this.data} columns={this.columns} bordered pagination={false}/>
-        {/* <Table dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/> */}
-        <Pagination current={crawlSellerStore.currentPage} onChange={(page: number) => crawlSellerStore.currentPage = page} total={crawlSellerStore.totalPage * 10} />
+        {/* <Table dataSource={this.data} columns={this.columns} bordered pagination={false}/> */}
+        <Table rowSelection={{...this.rowSelection}}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
+        <Pagination current={crawlSellerStore.currentPage} onChange={this.onChange} total={crawlSellerStore.totalPage * 10} showSizeChanger={false} />
       </React.Fragment>
     );
   }

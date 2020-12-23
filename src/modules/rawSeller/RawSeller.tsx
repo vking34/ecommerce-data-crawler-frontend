@@ -76,7 +76,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
         </>
       )
     },
-    { title: "Name Shop", dataIndex: "name",
+    { title: "Shop", dataIndex: "name",
       render: (name: string) => (
         <>
           <Link to= "/shop-detail">
@@ -145,28 +145,30 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     rawSellerStore.endDate = Moment.getDate(e[1]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
     // console.log( "date : " , rawSellerStore.startDate , " -> ", rawSellerStore.endDate);
   }
-  onSelectChange = (selectedRowKeys:any, selectedRows:any) => {
-    // console.log("selectedRowKeys : ", selectedRowKeys);
-    // console.log('selectedRows: ', selectedRows);
-    rawSellerStore.selectedRowKeys.push(selectedRows[0]?._id);
-    // console.log("selectedRowKeys store : ", rawSellerStore.selectedRowKeys);
-    // rawSellerStore.selectedRowKeys = selectedRowKeys;
-  };
+
   rowSelection: any = {
     // selectedRowKey: rawSellerStore.selectedRowKeys,
     onChange: (selectedRowKeys:any, selectedRows:any) => {
-      console.log("selectedRowKeys : ", selectedRowKeys);
-      console.log('selectedRows: ', selectedRows);
+      // console.log("selectedRowKeys : ", selectedRowKeys);
+      // console.log('selectedRows: ', selectedRows);
+      rawSellerStore.selectedRowKeys = selectedRowKeys;
       // console.log("selectedRowKeys store : ", rawSellerStore.selectedRowKeys);
       // rawSellerStore.selectedRowKeys = selectedRowKeys;
-    },
-    getCheckboxProps: (record: any) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
+    }
   };
-  tet = () => {
-    this.props.history.push("/crawling-addition");
+  handleCrawl = async () => {
+    // const resultApi = await callApi(
+    //   `v1/crawlers/shopee/shops/raw?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
+    //   "POST",
+    //   {},
+    //   false
+    //   );
+    // if (resultApi.result.status === 200) {
+    //   rawSellerStore.getDate(resultApi.result.data.data);
+    //   rawSellerStore.data = resultApi.result.data.data;
+    //   rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
+    //   // console.log("data : ", resultApi.result.data.pagination.total_elements);
+    // }
   }
   render() {
     return (
@@ -212,14 +214,14 @@ export default class RawSeller extends Component<RawSellerProps, any> {
             <i className="fas fa-download" style={{fontSize: "30px", cursor: "pointer"}}></i>
           </div>
           <div className="right-option">
-            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.tet}>
+            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.handleCrawl}>
               Crawl
             </Button>
           </div>
         </div>
         {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false} /> */}
         <Table rowSelection={{...this.rowSelection}} dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
-        <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} />
+        <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} showSizeChanger={false}/>
       </React.Fragment>
     );
   }

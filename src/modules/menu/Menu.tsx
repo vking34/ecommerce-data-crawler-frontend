@@ -9,6 +9,7 @@ import { rawSellerStore } from './../rawSeller/rawSellerStore';
 export default class Menu extends Component {
   private menuRef =React.createRef<HTMLDivElement>();
   urlRawSeller = `/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
+  urlCrawlSeller = `/crawl-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
 
   render() {
     return (
@@ -35,7 +36,7 @@ export default class Menu extends Component {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/crawl-seller">
+                  <Link className="nav-link" to={this.urlCrawlSeller}>
                     Crawl Seller
                   </Link>
                 </li>
