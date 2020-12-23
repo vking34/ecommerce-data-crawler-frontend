@@ -14,7 +14,9 @@ class ShopDetailStore {
   @observable infoSeller : any = {};
   @observable errorInfo: any = {};
   @observable showAbout: boolean = true;
-  
+  @observable id: string = "";  
+  @observable data: any = {};
+  @observable shop: any = {};
   editDetail = () => { 
     this.edit = !this.edit;
   }
@@ -26,6 +28,12 @@ class ShopDetailStore {
       [name]: value,
     }
     validate(name, value, this.errorInfo);
+  }
+  updateDetailShop = (keyValue: string, newValue: string) => {
+    this.shop = {
+      ...this.shop,
+      [keyValue]: newValue
+    }
   }
 }
 

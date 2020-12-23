@@ -5,21 +5,43 @@ class CrawlingStore {
   @observable items: number = 1;
   @observable shops: any = {};
   @observable data: string[] = [];
-  @observable valid: boolean = false;
-  @observable in: string = ""
+  @observable in: string = "";
+  @observable valid: boolean = true;
+
+  validBtnSave = () => {
+    if(Object.keys(this.shops).length < 1){
+      this.valid = true;
+    }else {
+      this.valid = false;
+    }
+  }
+  
   deletePropShops = async (index: number) => {
     if(this.itemsMap.length > 1){
       this.itemsMap = await this.itemsMap.filter((item) => item !== index );
     }
     this.in = index.toString();
     await delete this.shops[this.in];
+    this.validBtnSave();
   }
 
   updateShops = (keyValue: string, newValue: string) => {
-    this.shops = {
-      ...this.shops,
-      [keyValue]: newValue
+    if(newValue === ""){
+      delete this.shops[keyValue];
+    }else {
+      this.shops = {
+        ...this.shops,
+        [keyValue]: newValue
+      }
     }
+    this.validBtnSave();
+  }
+  cancel = () => {
+    this.itemsMap = [1];
+    this.items = 1;
+    this.shops = {};
+    this.data = [];
+    this.validBtnSave();
   }
   dataToSend = () => {
     for (const shop in this.shops) {

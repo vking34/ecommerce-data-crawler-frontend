@@ -3,19 +3,31 @@ import {Button, Input} from "antd"
 import {shopDetailStore} from "../shopDetailStore";
 import { observer } from 'mobx-react';
 
+
+interface AboutProps {
+  info: any
+}
+
 @observer
-export default class About extends Component {
+export default class About extends Component<any, any> {
   elementDetail = (title: string, content: string) => {
+    const info: any = {
+      
+    }
     return (
       <p>
         <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
         { !shopDetailStore.edit ? 
           <span> {content} </span>
           :
-          <Input placeholder={title} name={title} />
+          <Input placeholder={title} name={title} defaultValue={content} onChange={this.handleInput} />
         }
       </p>
     )
+  }
+  handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name , value} = event.target; 
+    shopDetailStore.updateDetailShop(name, value);
   }
   render() {
     return (

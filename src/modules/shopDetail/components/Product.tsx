@@ -2,8 +2,13 @@ import { DownOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd';
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 
-export default class Product extends Component {
+interface ProductProps {
+  info: any
+}
+@observer
+export default class Product extends Component<any> {
 
   columns: any = [
     { title: "Image", dataIndex: "img", key: "img", width: "100px",

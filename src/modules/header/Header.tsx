@@ -13,7 +13,7 @@ export default class Header extends Component {
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           <Link className="navbar-brand brand-logo" to="/">
             {/* <img src="/assets/images/logo.svg" alt="logo" />  */}
-            <h1>Chozoi MCG</h1>
+            <h1 style={{marginBottom: 0}}>Chozoi MCG</h1>
           </Link>
           <a className="navbar-brand brand-logo-mini" href="/">
             <img style={{ width: "37%" }} src="/logo.png" alt="logo" />

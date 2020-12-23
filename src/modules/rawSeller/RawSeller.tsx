@@ -10,6 +10,7 @@ import { rawSellerStore } from "./rawSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Moment } from "../../common/Moment";
 import { Link } from "react-router-dom";
+import { menuStore } from "../menu/menuStore";
 // import { Link } from "react-router-dom";
 // import { DateRangePicker } from "rsuite";
 
@@ -36,6 +37,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
   );
 
   componentDidMount() {
+    menuStore.changeOption("1Raw");
     this.requestAPI();
   }
   componentDidUpdate(prevProps: Readonly<RawSellerProps>,prevState: Readonly<any>,snapshot?: any) {
@@ -62,6 +64,8 @@ export default class RawSeller extends Component<RawSellerProps, any> {
         rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
         // console.log("data : ", resultApi.result.data.pagination.total_elements);
       }
+    }else {
+      this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`)  
     }
   };
   // handlPage = (e: any)=> {

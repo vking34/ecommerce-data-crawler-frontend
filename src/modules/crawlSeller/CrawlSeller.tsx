@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Pagination, Table } from "antd";
 import { observer } from "mobx-react";
-import {DownOutlined,UserOutlined} from "@ant-design/icons";
+import {DownOutlined} from "@ant-design/icons";
 import { Button, Dropdown, Menu } from "antd";
 
 import myCrawlSellerParam from "./components/myCrawlSellerParam";
 import { crawlSellerStore } from "./crawlSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Link } from "react-router-dom";
+import { menuStore } from "../menu/menuStore";
 
 interface CrawlSellerProps {
   history: { push: (path: string) => any };
@@ -30,6 +31,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   );
 
   componentDidMount() {
+    menuStore.changeOption("1Crawl");
     this.requestAPI();
   }
   componentDidUpdate(prevProps: Readonly<CrawlSellerProps>,prevState: Readonly<any>,snapshot?: any) {
@@ -56,6 +58,8 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         crawlSellerStore.totalPage = resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize;
         // console.log("data : ", resultApi.result.data.data);
       }
+    }else {
+      this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
     }
   };
 
@@ -109,25 +113,57 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
       )
     },
   ];
-  // data = [
-  //   {
-  //     _id: '1',
-  //     name: 'Mike',
-  //     phone_numbers: ["0985299551"],
-  //     quantity: 32,
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //   },
-  //   {
-  //     _id: '2',
-  //     name: 'Mike',
-  //     phone_numbers: [],
-  //     quantity: 32,
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //     action: ["1"]
-  //   },
-  // ];
+  data = [
+    {
+      key: "1",
+      _id: '1',
+      name: 'Mike',
+      phone_numbers: ["0985299551"],
+      quantity: 32,
+      state: "DONE",
+      updated_at: "23/12/2020",
+    },
+    {
+      key: "2",
+      _id: '2',
+      name: 'Mike',
+      phone_numbers: [],
+      quantity: 32,
+      state: "DONE",
+      updated_at: "23/12/2020",
+      action: ["1"]
+    },
+    {
+      key: "3",
+      _id: '3',
+      name: 'Mike',
+      phone_numbers: [],
+      quantity: 32,
+      state: "DONE",
+      updated_at: "23/12/2020",
+      action: ["1"]
+    },
+    {
+      key: "4",
+      _id: '4',
+      name: 'Mike',
+      phone_numbers: [],
+      quantity: 32,
+      state: "DONE",
+      updated_at: "23/12/2020",
+      action: ["1"]
+    },
+    {
+      key: "5",
+      _id: '5',
+      name: 'Mike',
+      phone_numbers: [],
+      quantity: 32,
+      state: "DONE",
+      updated_at: "23/12/2020",
+      action: ["1"]
+    },
+  ];
   onChange = (page: number) => {
     crawlSellerStore.currentPage = page;
     this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
@@ -193,8 +229,8 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
           </div>
         </div>
         <p style={{margin: "10px"}}>Total : 12399 shops</p>
-        {/* <Table dataSource={this.data} columns={this.columns} bordered pagination={false}/> */}
-        <Table rowSelection={{...this.rowSelection}}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
+        <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false}/>
+        {/* <Table rowSelection={{...this.rowSelection}}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/> */}
         <Pagination current={crawlSellerStore.currentPage} onChange={this.onChange} total={crawlSellerStore.totalPage * 10} showSizeChanger={false} />
       </React.Fragment>
     );

@@ -4,16 +4,17 @@ import { Redirect, Route, Switch } from "react-router";
 
 import NotFound from "../notFound/NotFound";
 // import { commonStore } from "../common/commonStore";
-import Test from "../test/Test";
+// import Test from "../test/Test";
 import RawSeller from "../rawSeller/RawSeller";
 import Crawling from "../crawling/Crawling";
 import CrawlSeller from "../crawlSeller/CrawlSeller";
 import ShopDetail from "../shopDetail/ShopDetail";
+import Home from './../home/Home';
 
 export const ListRouter = () => {
   return (
     <Switch>
-          <Route exact path="/" component={Test} />
+          <Route exact path="/" component={Home} />
           <Route exact path="/raw-seller" component={RawSeller} />
           <Route exact path="/crawl-seller" component={CrawlSeller} />
           <Route exact path="/crawling-addition" component={Crawling} />

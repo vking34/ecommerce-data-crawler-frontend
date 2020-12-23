@@ -7,6 +7,7 @@ import {crawlingStore} from "./crawlingStore";
 import { callApi } from '../../utils/callAPI';
 import { notify } from '../../common/notify/NotifyService';
 import { UploadOutlined } from '@ant-design/icons';
+import { menuStore } from '../menu/menuStore';
 
 interface CrawlingProps {
   history: { push: (path: string) => any };
@@ -19,6 +20,7 @@ export default class Crawling extends Component<CrawlingProps, any> {
   private data: string[] = [];
   componentDidMount() {
     this.inputRef.current!.focus();
+    menuStore.changeOption("1Crawling");
   }
 
   dataSend = (data : any) => {
@@ -27,9 +29,9 @@ export default class Crawling extends Component<CrawlingProps, any> {
      };
   }
   requestAPI = async () => {
-    this.dataSend(crawlingStore.shops);
+    this.dataSend(crawlingStore.shops); 
     crawlingStore.dataToSend();
-    console.log("data : ", this.data);
+    // console.log("data : ", this.data);
     // console.log("shop : ", crawlingStore.data);
     // return;
     // if(this.props.location.search){
@@ -50,10 +52,8 @@ export default class Crawling extends Component<CrawlingProps, any> {
       // crawlingStore.totalPage = resultApi.result.data.pagination.total_elements / crawlingStore.pageSize;
       // console.log("data : ", resultApi.result.data);
       // this.props.history.push("/crawling-addition");
-      notify.show(` Crawling shops ... ! `, "success");
-      crawlingStore.shops = {};
-      crawlingStore.itemsMap = [1];
-      crawlingStore.items = 1;
+      notify.show(`Crawling shops ... ! `, "success");
+      crawlingStore.cancel();
     }
   };
   change = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -118,6 +118,9 @@ export default class Crawling extends Component<CrawlingProps, any> {
           <hr></hr>
         <Button type="primary" size={"large"} style={{margin : "10px", width: "99px"}} onClick={this.requestAPI} disabled={crawlingStore.valid}>
           Save
+        </Button>
+        <Button type="primary" size={"large"} style={{margin : "10px", width: "99px", backgroundColor: "#f7a922"}} onClick={crawlingStore.cancel}>
+          Cancel
         </Button>
       </React.Fragment> 
     )

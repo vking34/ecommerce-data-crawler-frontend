@@ -1,4 +1,4 @@
-import { shopDetailStore } from '../shopDetailStore';
+// import { shopDetailStore } from '../shopDetailStore';
 // import { Moment } from '../../../common/Moment';
 
 export default class myShopDetailParam extends URLSearchParams {
@@ -7,7 +7,7 @@ export default class myShopDetailParam extends URLSearchParams {
     Object.setPrototypeOf(this, myShopDetailParam.prototype)
   }
 
-  get getId(): String{
+  get getId(): string{
     let id: any = this.get('id') || null;
     if(id === undefined || id == null){
       id = "all";
