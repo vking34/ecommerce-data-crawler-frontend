@@ -4,6 +4,9 @@
 img {
   width: 100%;
 }
+i.mdi-crosshairs-gps {
+  margin: 5px !important;
+}
 i.fa-download {
   margin: 10px;
 }
@@ -105,7 +108,7 @@ i.fa-download {
   flex-grow: 1;
 }
 .ant-input{
-  margin: 0 10px !important;
+  margin: 10px !important;
 }
 nav a{
   color: #fff;

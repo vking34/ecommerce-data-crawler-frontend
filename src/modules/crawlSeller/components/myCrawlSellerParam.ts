@@ -8,10 +8,10 @@ export default class myCrawlSellerParam extends URLSearchParams {
     Object.setPrototypeOf(this, myCrawlSellerParam.prototype)
   }
 
-  get getState(): String{
+  get getState(): string{
     let state: any = this.get('state') || null;
     if(state === undefined || state == null){
-      state = "all";
+      state = "STATE";
     }
     return state;
   }

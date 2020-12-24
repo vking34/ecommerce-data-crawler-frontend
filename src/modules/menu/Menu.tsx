@@ -3,12 +3,17 @@ import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 import { menuStore } from "./menuStore";
 import { rawSellerStore } from './../rawSeller/rawSellerStore';
+import { crawlSellerStore } from "../crawlSeller/crawlSellerStore";
 
 @observer
 export default class Menu extends Component {
   private menuRef =React.createRef<HTMLDivElement>();
   urlRawSeller = `/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
-  urlCrawlSeller = `/crawl-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
+  urlCrawlSeller = crawlSellerStore.state === "STATE" ? 
+   `/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+   :
+   `/crawl-seller?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+  
   render() {
     return (
       <nav className={!menuStore.showMenu ? "sidebar sidebar-offcanvas menu-main" : " menu-main sidebar sidebar-offcanvas active"} ref={this.menuRef} style={{backgroundColor: "#181824"}}>

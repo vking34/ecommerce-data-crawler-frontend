@@ -17,7 +17,7 @@ interface CrawlingProps {
 @observer
 export default class Crawling extends Component<CrawlingProps, any> {
   private readonly inputRef: React.RefObject<any> = createRef();
-  private data: string[] = [];
+  private dataPost: string[] = [];
   componentDidMount() {
     this.inputRef.current!.focus();
     menuStore.changeOption("1Crawling");
@@ -25,33 +25,22 @@ export default class Crawling extends Component<CrawlingProps, any> {
 
   dataSend = (data : any) => {
     for (const shop in data) {
-      this.data.push(data[shop]);
+      this.dataPost.push(data[shop]);
      };
   }
   requestAPI = async () => {
     this.dataSend(crawlingStore.shops); 
-    crawlingStore.dataToSend();
-    // console.log("data : ", this.data);
-    // console.log("shop : ", crawlingStore.data);
-    // return;
-    // if(this.props.location.search){
-    //   const params = new myCrawlerSellerParam(this.props.location.search)
-    //   crawlingStore.state = params.getState;
+    // console.log("data : ", this.dataPost);
     const resultApi = await callApi(
-      `v1/crawlers/shopee/shops`,
+      `v1/crawlers/shopee/converted-shops`,
       "POST",
       {
-        shops: this.data
-        // crawlingStore.data,
+        shop_links: this.dataPost
       },
       false
       );
     if (resultApi.result.status === 200) {
-      // crawlingStore.getDate(resultApi.result.data.data);
       crawlingStore.data = resultApi.result.data.data;
-      // crawlingStore.totalPage = resultApi.result.data.pagination.total_elements / crawlingStore.pageSize;
-      // console.log("data : ", resultApi.result.data);
-      // this.props.history.push("/crawling-addition");
       notify.show(`Crawling shops ... ! `, "success");
       crawlingStore.cancel();
     }
@@ -63,7 +52,6 @@ export default class Crawling extends Component<CrawlingProps, any> {
     }
   }
   handleAddItem = () => {
-    // console.log("map : ");
     crawlingStore.items ++;
     crawlingStore.itemsMap.push(crawlingStore.items);
     this.inputRef.current!.focus();
@@ -71,8 +59,6 @@ export default class Crawling extends Component<CrawlingProps, any> {
   handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name , value} = event.target; 
     crawlingStore.updateShops(name, value);
-    // console.log("update : ", name , " : ", value);
-    // console.log("shop text : ", crawlingStore.shops[1]); 
   }
   propsUpload: any = {
     name: 'file',

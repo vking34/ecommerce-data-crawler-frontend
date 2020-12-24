@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { menuStore } from "../menu/menuStore";
 // import { Link } from "react-router-dom";
 // import { DateRangePicker } from "rsuite";
+import { notify } from './../../common/notify/NotifyService';
 
 interface RawSellerProps {
   history: { push: (path: string) => any };
@@ -22,6 +23,7 @@ interface RawSellerProps {
 const { RangePicker } = DatePicker;
 @observer
 export default class RawSeller extends Component<RawSellerProps, any> {
+  private dataPost: string[] = [];
   menu: any = (
     <Menu>
       <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
@@ -53,7 +55,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       rawSellerStore.currentPage = params.getPage;
       rawSellerStore.pageSize = params.getLimit;
       const resultApi = await callApi(
-        `v1/crawlers/shopee/shops/raw?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
+        `v1/crawlers/shopee/raw-shops?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
         "GET",
         {},
         false
@@ -117,7 +119,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       ),
     },
     { title: "Update At", dataIndex: "updated_at"},
-    { title: "Crawl Status", dataIndex: "status"},
+    // { title: "Crawl Status", dataIndex: "status"},
   ];
   // data = [
   //   {
@@ -153,26 +155,24 @@ export default class RawSeller extends Component<RawSellerProps, any> {
   rowSelection: any = {
     // selectedRowKey: rawSellerStore.selectedRowKeys,
     onChange: (selectedRowKeys:any, selectedRows:any) => {
-      // console.log("selectedRowKeys : ", selectedRowKeys);
-      // console.log('selectedRows: ', selectedRows);
       rawSellerStore.selectedRowKeys = selectedRowKeys;
+      this.dataPost = selectedRowKeys;
+      // console.log("data post : ", this.dataPost);
       // console.log("selectedRowKeys store : ", rawSellerStore.selectedRowKeys);
-      // rawSellerStore.selectedRowKeys = selectedRowKeys;
     }
   };
   handleCrawl = async () => {
-    // const resultApi = await callApi(
-    //   `v1/crawlers/shopee/shops/raw?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
-    //   "POST",
-    //   {},
-    //   false
-    //   );
-    // if (resultApi.result.status === 200) {
-    //   rawSellerStore.getDate(resultApi.result.data.data);
-    //   rawSellerStore.data = resultApi.result.data.data;
-    //   rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
-    //   // console.log("data : ", resultApi.result.data.pagination.total_elements);
-    // }
+    const resultApi = await callApi(
+      `v1/crawlers/shopee/converted-shops`,
+      "POST",
+      {
+        shop_ids : this.dataPost
+      },
+      false
+    );
+    if (resultApi.result.status === 200) {
+      notify.show(`Converted shops ... ! `, "success");
+    }
   }
   render() {
     return (

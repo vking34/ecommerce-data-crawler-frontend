@@ -3,14 +3,14 @@ import { observable } from 'mobx';
 import { Moment } from '../../common/Moment';
 
 class CrawlSellerStore {
-  @observable state: String = "";
   @observable data: any = [];
   @observable market: string = "Total Market";
-  @observable status: string = "Status";
+  @observable state: string = "STATE";
   @observable currentPage: number = 1;
   @observable totalPage: number = 1;
   @observable pageSize: number = 15;
   @observable selectedRowKeys: any = [];
+  @observable totalShops: number = 0;
   getDate = (data: any) => {
     data.map((item: any, key: number) => {
       item.key = item._id;
