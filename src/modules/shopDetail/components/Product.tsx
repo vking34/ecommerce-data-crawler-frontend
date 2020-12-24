@@ -85,7 +85,7 @@ export default class Product extends Component<any> {
       if (resultApi.result.status === 200) {
         shopDetailStore.getDate(resultApi.result.data.data);
         shopDetailStore.infoProducts = resultApi.result.data.data;
-        shopDetailStore.totalPage = resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts;
+        shopDetailStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts);
         // console.log("data : ", resultApi.result.data);
       }
   }

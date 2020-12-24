@@ -63,7 +63,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       if (resultApi.result.status === 200) {
         rawSellerStore.getDate(resultApi.result.data.data);
         rawSellerStore.data = resultApi.result.data.data;
-        rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
+        rawSellerStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize);
         // console.log("data : ", resultApi.result.data.pagination.total_elements);
       }
     }else {
