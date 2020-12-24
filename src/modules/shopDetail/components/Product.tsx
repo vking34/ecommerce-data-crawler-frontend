@@ -97,6 +97,7 @@ export default class Product extends Component<any> {
       false
       );
     if (resultApi.result.status === 200) {
+      shopDetailStore.selectedRowKeys = [];
       notify.show(" Approved " , "success")
       // console.log("data : ", resultApi.result.data.pagination.total_elements);
     }

@@ -86,7 +86,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         crawlSellerStore.getDate(resultApi.result.data.data);
         crawlSellerStore.data = resultApi.result.data.data;
         crawlSellerStore.totalShops = resultApi.result.data.pagination.total_elements;
-        crawlSellerStore.totalPage = resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize;
+        crawlSellerStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize);
         // console.log("data : ", resultApi.result.data.data);
       }
     }else {
