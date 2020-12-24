@@ -3,88 +3,71 @@ import { Button, Dropdown, Menu, Pagination, Table } from 'antd';
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
+import { shopDetailStore } from './../shopDetailStore';
+import { render } from '@testing-library/react';
 
 interface ProductProps {
-  info: any
+  infoProducts: any
 }
 @observer
 export default class Product extends Component<any> {
 
   columns: any = [
-    { title: "Image", dataIndex: "img", key: "img", width: "100px",
-      render: (src: string) => (
+    { title: "Image", dataIndex: "images", width: "100px",
+      render: (src: any) => (
         <>
-          <img src={src} alt="img" style={{width: "79%"}}/>
+          <img src={src[0].image_url} alt="img" style={{width: "79%"}}/>
         </>
       )
     },
     { title: "Name", dataIndex: "name", key: "name" },
-    { title: "Phone Numbers",dataIndex: "phone_numbers", key: "phone_numbers",
-      render: (phone_numbers: string[]) => (
+    { title: "Category", dataIndex: "category", key: "category" ,
+      render: (category: any) => (
         <>
-          {phone_numbers.length > 0 ?
-            <React.Fragment>
-              <div className="dropdown show-dropdown option-main open">
-                <span data-toggle="dropdown" aria-expanded="true">
-                  <i className="fas fa-phone" style={{margin: "7px 17px", color: "#f54b24"}}></i>
-                  <span>
-                    {phone_numbers[0]} &nbsp;
-                    <i className="fas fa-angle-down" />
-                  </span>
-                </span>
-                <ul className="dropdown-menu">
-                {phone_numbers.map((phone_number: string, index: number) => {
-                  return (
-                      <li key={index}>
-                        <i className="fas fa-phone" style={{margin: "7px 17px", color: "#f54b24"}}></i>
-                        <span>{phone_number}</span>
-                      </li>
-                  );
-                })}
-                </ul>
-              </div>
-            </React.Fragment>
-            :
-            <span style={{opacity: "0.7"}}>null</span>
-          }
+          {category.id}
         </>
-      ),
+      )
     },
-    { title: "Category", dataIndex: "category", key: "category" },
-    { title: "Flash Sale", dataIndex: "flash", key: "flash" },
+    { title: "Flash Sale", dataIndex: "flash", key: "flash",
+      render: (flash: any) => (
+        <>
+          No
+        </>
+      )
+    },
     { title: "Status", dataIndex: "status", key: "status" },
     { title: "Update At", dataIndex: "updated_at", key: "updated_at" },
     { title: "Action", dataIndex:"action", key: "action",
       render: (id: any) => (
         // <i className="fas fa-pencil-alt"></i>
         <>
-          <Link to="/shop-detail">
+          {/* <Link to="/shop-detail"> */}
             <i className="fas fa-pencil-alt" style={{margin: "0 10px"}}></i>
-          </Link>
+          {/* </Link> */}
         </>
       )
     },
   ];
-  data = [
-    {
-      img: '/assets/img/images.jpg',
-      name: 'Mike',
-      phone_numbers: [],
-      category: 32,
-      flash: "DONE",
-      updated_at: "23/12/2020",
-      status: "Approve"
-    },
-    {
-      img: '/assets/img/images.jpg',
-      name: 'Mike',
-      phone_numbers: [],
-      category: 32,
-      flash: "DONE",
-      updated_at: "23/12/2020",
-      status: "Approve"
-    },
-  ];
+  // data = [
+  //   {
+  //     img: '/assets/img/images.jpg',
+  //     name: 'Mike',
+  //     phone_numbers: [],
+  //     category: 32,
+  //     flash: "DONE",
+  //     updated_at: "23/12/2020",
+  //     status: "Approve"
+  //   },
+  //   {
+  //     img: '/assets/img/images.jpg',
+  //     name: 'Mike',
+  //     phone_numbers: [],
+  //     category: 32,
+  //     flash: "DONE",
+  //     updated_at: "23/12/2020",
+  //     status: "Approve"
+  //   },
+  // ];
   menu: any = (
     <Menu>
       <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
@@ -110,7 +93,7 @@ export default class Product extends Component<any> {
   render() {
     return (
       <React.Fragment>
-        <div className="nav-table">
+        <div className="nav-table" style={{border: "none"}}>
           <div className="left-option">
             <div className="search-field d-none d-md-block" style={{height: "33px", margin: "10px"}}>
               <form className="d-flex align-items-center h-100" action="#">
@@ -142,9 +125,9 @@ export default class Product extends Component<any> {
             </Button>
           </div>
         </div>
-        <Table rowSelection={this.rowSelection}  dataSource={this.data} columns={this.columns} bordered pagination={false}/>
+        <Table style={{border: "none !important"}} rowSelection={this.rowSelection} dataSource={this.props.infoProducts} columns={this.columns} pagination={false}/>
         {/* <Table dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/> */}
-        <Pagination current={1} onChange={(page: number) => console.log(page)} total={2 * 10} />
+        <Pagination current={shopDetailStore.currentPage} onChange={(page: number) => console.log(page)} total={2 * 10} />
       </React.Fragment>
     );
   }

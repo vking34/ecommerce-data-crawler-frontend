@@ -1,6 +1,7 @@
 // import { error } from './../../common/notify/index';
 import { validate } from './../../common/Handler';
 import { observable } from 'mobx';
+import { Moment } from './../../common/Moment';
 
 
 class ShopDetailStore {
@@ -16,7 +17,11 @@ class ShopDetailStore {
   @observable showAbout: boolean = true;
   @observable id: string = "";  
   @observable data: any = {};
+  @observable info: any = {};
+  @observable infoProducts: any = [];
   @observable shop: any = {};
+  @observable pageSizeProducts: number = 10;
+  @observable currentPage: number = 1;
   editDetail = () => { 
     this.edit = !this.edit;
   }
@@ -34,6 +39,16 @@ class ShopDetailStore {
       ...this.shop,
       [keyValue]: newValue
     }
+  }
+  getDate = (data: any) => {
+    data.map((item: any, key: number) => {
+      // var dateStr = JSON.parse("\"2014-01-01T23:28:56.782Z\"");
+      item.key = item._id;
+      var str = "\"" + item.updated_at + "\"";
+      var dateStr = JSON.parse(str);
+      var date = new Date(dateStr);
+      item.updated_at = Moment.getDate(date.getTime(),"dd/mm/yyyy");
+    })
   }
 }
 

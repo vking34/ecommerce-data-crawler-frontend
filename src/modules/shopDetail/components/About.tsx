@@ -2,17 +2,24 @@ import React, { Component } from 'react'
 import {Button, Input} from "antd"
 import {shopDetailStore} from "../shopDetailStore";
 import { observer } from 'mobx-react';
+import { Moment } from './../../../common/Moment';
 
 
-interface AboutProps {
-  info: any
-}
+// interface AboutProps {
+//   info: any
+// }
 
 @observer
 export default class About extends Component<any, any> {
-  elementDetail = (title: string, content: string) => {
-    const info: any = {
+  elementDetail = (title: string, content: string | string[]) => {
+    // const info: any = {
       
+    // }
+    if(title === "Birthday" || title === "Register Time"){
+      content = this.handleDate(content);
+    }
+    if(title === "Phone" && typeof(content) === "object"){
+      content = content.join(" / "); 
     }
     return (
       <p>
@@ -25,13 +32,19 @@ export default class About extends Component<any, any> {
       </p>
     )
   }
+  handleDate = (data: any) => {
+    var str = "\"" + data + "\"";
+    var dateStr = JSON.parse(str);
+    var date = new Date(dateStr);
+    return Moment.getDate(date.getTime(),"dd/mm/yyyy");
+  }
   handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name , value} = event.target; 
     shopDetailStore.updateDetailShop(name, value);
   }
   render() {
     return (
-      <table style={{width: "100%"}}>
+      <table style={{width: "100%", backgroundColor: "#fff"}}>
             <tr>
               <th style={{paddingLeft: "37px"}}>Seller Information</th>
               <th style={{textAlign: "right"}} >
@@ -53,38 +66,38 @@ export default class About extends Component<any, any> {
             </tr>
             <tr>
               <td>
-                {this.elementDetail("Full Name", "null")}
-                {this.elementDetail("Email", "null")}
+                {this.elementDetail("Name", this.props.info.username)}
+                {this.elementDetail("Email", this.props.info.email)}
               </td>
               <td>
-                {this.elementDetail("Phone", "null")}
-                {this.elementDetail("Birthday", "null")}
+                {this.elementDetail("Phone", this.props.info.phone_numbers)}
+                {this.elementDetail("Birthday", this.props.info.created_at)}
               </td>
             </tr>
             <tr>
               <td>
-                {this.elementDetail("Shop Name", "null")}
-                {this.elementDetail("Contact Name", "null")}
-                {this.elementDetail("Email", "null")}
+                {this.elementDetail("Shop Name", this.props.info.name)}
+                {this.elementDetail("Contact Name", this.props.info.name)}
+                {this.elementDetail("Email", this.props.info.email)}
               </td>
               <td>
-                {this.elementDetail("Register Time", "null")}
-                {this.elementDetail("Shop Type", "null")}
-                {this.elementDetail("Phone", "null")}
+                {this.elementDetail("Register Time", this.props.info.created_at)}
+                {this.elementDetail("Shop Type", this.props.info.type)}
+                {this.elementDetail("Phone", this.props.info.phone_numbers)}
               </td>
             </tr>
             <tr>
               <td>
                 <p className="span-title"><i className="mdi mdi-flag-triangle"/>WAREHOUSE</p>
-                {this.elementDetail("Name", "null")}
-                {this.elementDetail("Phone", "null")}
-                {this.elementDetail("Address", "null")}
+                {this.elementDetail("Name", this.props.info.name)}
+                {this.elementDetail("Phone", this.props.info.name)}
+                {this.elementDetail("Address", this.props.info.name)}
               </td>
               <td>
                 <p className="span-title"><i className="mdi mdi-flag-triangle"/>RETURN</p>
-                {this.elementDetail("Name", "null")}
-                {this.elementDetail("Phone", "null")}
-                {this.elementDetail("Address", "null")}
+                {this.elementDetail("Name", this.props.info.nameWarehouse)}
+                {this.elementDetail("Phone", this.props.info.phone_numbers)}
+                {this.elementDetail("Address", this.props.info.address)}
               </td>
             </tr>
           </table>

@@ -64,7 +64,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   }
 
   requestAPI = async () => {
-    let url: string = "/";
+    let url: string = "/"; 
     if(this.props.location.search){
       const params = new myCrawlSellerParam(this.props.location.search)
       crawlSellerStore.state = params.getState;
@@ -131,17 +131,21 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
     { title: "State", dataIndex: "state" },
     // { title: "Chozoi Status", dataIndex: "state"},
     { title: "Update At", dataIndex: "updated_at" },
-    { title: "Action", dataIndex:"action",
-      render: (id: any) => (
+    { title: "Action", dataIndex:"_id",
+      render: (_id: string) => (
         // <i className="fas fa-pencil-alt"></i>
         <>
-          <Link to="/shop-detail">
-            <i className="fas fa-pencil-alt" style={{margin: "0 10px"}}></i>
-          </Link>
+          {/* {_id} */}
+          {/* <Link to="/shop-detail"> */}
+            <i className="fas fa-pencil-alt" style={{margin: "0 10px"}} onClick={() => this.showDetail(_id)}></i>
+          {/* </Link> */}
         </>
       )
     },
   ];
+  showDetail = (str: string) => {
+    this.props.history.push(`/shop-detail?id=${str}`);
+  }
   // data = [
   //   {
   //     key: "1",
