@@ -1,17 +1,22 @@
 import { DownOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Menu, Pagination, Table } from 'antd';
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { shopDetailStore } from './../shopDetailStore';
-import { render } from '@testing-library/react';
+import { callApi } from '../../../utils/callAPI';
+import { notify } from '../../../common/notify/NotifyService';
 
-interface ProductProps {
-  infoProducts: any
-}
+// interface ProductProps {
+//   infoProducts: any
+// }
 @observer
 export default class Product extends Component<any> {
 
+  componentDidMount() {
+    console.log("id : ", this.props.id, " - ", shopDetailStore.id);
+    this.requestAPI();
+  }
+  
   columns: any = [
     { title: "Image", dataIndex: "images", width: "100px",
       render: (src: any) => (
@@ -48,26 +53,6 @@ export default class Product extends Component<any> {
       )
     },
   ];
-  // data = [
-  //   {
-  //     img: '/assets/img/images.jpg',
-  //     name: 'Mike',
-  //     phone_numbers: [],
-  //     category: 32,
-  //     flash: "DONE",
-  //     updated_at: "23/12/2020",
-  //     status: "Approve"
-  //   },
-  //   {
-  //     img: '/assets/img/images.jpg',
-  //     name: 'Mike',
-  //     phone_numbers: [],
-  //     category: 32,
-  //     flash: "DONE",
-  //     updated_at: "23/12/2020",
-  //     status: "Approve"
-  //   },
-  // ];
   menu: any = (
     <Menu>
       <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
@@ -82,15 +67,45 @@ export default class Product extends Component<any> {
     </Menu>
   );
   onSelectChange = (selectedRowKeys: any) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
-    // this.setState({ selectedRowKeys });
+    shopDetailStore.selectedRowKeys = selectedRowKeys;
+    // console.log('selectedRowKeys changed: ', selectedRowKeys);
   };
-  rowSelection: any = {
-    // selectedRowKeys,
-    onChange: this.onSelectChange,
-  };
-
+  onChange = (page: number) => {
+    shopDetailStore.currentPage = page;
+    this.requestAPI();
+  }
+  requestAPI = async () => {
+      const resultApi = await callApi(
+        `v1/crawlers/shopee/converted-shops/${this.props.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
+        // `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
+        "GET",
+        {},
+        false
+      )
+      if (resultApi.result.status === 200) {
+        shopDetailStore.getDate(resultApi.result.data.data);
+        shopDetailStore.infoProducts = resultApi.result.data.data;
+        shopDetailStore.totalPage = resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts;
+        // console.log("data : ", resultApi.result.data);
+      }
+  }
+  handleApprove = async () => {
+    const resultApi = await callApi(
+      `v1/crawlers/shopee/approved-shops`,
+      "POST",
+      {"shop_ids": shopDetailStore.id},
+      false
+      );
+    if (resultApi.result.status === 200) {
+      notify.show(" Approved " , "success")
+      // console.log("data : ", resultApi.result.data.pagination.total_elements);
+    }
+  }
   render() {
+    const rowSelection: any = {
+      onChange: this.onSelectChange,
+      selectedRowKeys: shopDetailStore.selectedRowKeys, 
+    };
     return (
       <React.Fragment>
         <div className="nav-table" style={{border: "none"}}>
@@ -117,18 +132,17 @@ export default class Product extends Component<any> {
             </Dropdown>
             <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
               Filter
-            </Button>
+            </Button> 
           </div>
           <div className="right-option">
-            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}}>
+            <Button type="primary" style={{border: "none",margin: "10px"}} onClick={this.handleApprove}>
               Approve
             </Button>
           </div>
         </div>
-        <Table style={{border: "none !important"}} rowSelection={this.rowSelection} dataSource={this.props.infoProducts} columns={this.columns} pagination={false}/>
-        {/* <Table dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/> */}
-        <Pagination current={shopDetailStore.currentPage} onChange={(page: number) => console.log(page)} total={2 * 10} />
-      </React.Fragment>
+        <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={this.props.infoProducts} columns={this.columns} pagination={false}/>
+        <Pagination current={shopDetailStore.currentPage} onChange={this.onChange} total={shopDetailStore.totalPage * 10} showSizeChanger={false} />
+      </React.Fragment> 
     );
   }
 }

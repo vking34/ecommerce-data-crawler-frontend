@@ -22,6 +22,8 @@ class ShopDetailStore {
   @observable shop: any = {};
   @observable pageSizeProducts: number = 10;
   @observable currentPage: number = 1;
+  @observable totalPage: number = 1;
+  @observable selectedRowKeys: string[] = [];
   editDetail = () => { 
     this.edit = !this.edit;
   }

@@ -120,7 +120,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     },
     { title: "Update At", dataIndex: "updated_at"},
     // { title: "Crawl Status", dataIndex: "status"},
-  ];
+  ]; 
   // data = [
   //   {
   //     key: "1",
@@ -152,15 +152,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     // console.log( "date : " , rawSellerStore.startDate , " -> ", rawSellerStore.endDate);
   }
 
-  rowSelection: any = {
-    // selectedRowKey: rawSellerStore.selectedRowKeys,
-    onChange: (selectedRowKeys:any, selectedRows:any) => {
-      rawSellerStore.selectedRowKeys = selectedRowKeys;
-      this.dataPost = selectedRowKeys;
-      // console.log("data post : ", this.dataPost);
-      // console.log("selectedRowKeys store : ", rawSellerStore.selectedRowKeys);
-    }
-  };
+
   handleCrawl = async () => {
     const resultApi = await callApi(
       `v1/crawlers/shopee/converted-shops`,
@@ -171,10 +163,19 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       false
     );
     if (resultApi.result.status === 200) {
+      rawSellerStore.selectedRowKeys = []; 
       notify.show(`Converted shops ... ! `, "success");
     }
   }
   render() {
+    const rowSelection: any = {
+      // selectedRowKey: rawSellerStore.selectedRowKeys,
+      onChange: (selectedRowKeys:any, selectedRows:any) => {
+        rawSellerStore.selectedRowKeys = selectedRowKeys;
+        this.dataPost = selectedRowKeys;
+      },
+      selectedRowKeys: rawSellerStore.selectedRowKeys,
+    }
     return (
       <React.Fragment>
         <div className="nav-table">
@@ -224,7 +225,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
           </div>
         </div>
         {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false} /> */}
-        <Table rowSelection={{...this.rowSelection}} dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
+        <Table rowSelection={rowSelection} dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
         <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} showSizeChanger={false}/>
       </React.Fragment>
     );

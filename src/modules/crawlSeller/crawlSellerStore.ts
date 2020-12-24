@@ -10,7 +10,7 @@ class CrawlSellerStore {
   @observable totalPage: number = 1;
   @observable pageSize: number = 15;
   @observable selectedRowKeys: any = [];
-  @observable totalShops: number = 0;
+  @observable totalShops: number = 0; 
   getDate = (data: any) => {
     data.map((item: any, key: number) => {
       item.key = item._id;
@@ -18,7 +18,7 @@ class CrawlSellerStore {
       var str = "\"" + item.updated_at + "\"";
       var dateStr = JSON.parse(str);
       var date = new Date(dateStr);
-      item.updated_at = Moment.getDate(date.getTime(),"dd/mmyyyy");
+      item.updated_at = Moment.getDate(date.getTime(),"dd/mm/yyyy");
     })
   }
 }

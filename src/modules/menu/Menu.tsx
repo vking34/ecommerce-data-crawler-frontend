@@ -18,12 +18,12 @@ export default class Menu extends Component {
     return (
       <nav className={!menuStore.showMenu ? "sidebar sidebar-offcanvas menu-main" : " menu-main sidebar sidebar-offcanvas active"} ref={this.menuRef} style={{backgroundColor: "#181824"}}>
         <ul className="nav">
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <Link className="nav-link" to="/shop-detail">
               <span className="menu-title">Shop Detail</span>
               <i className="mdi mdi-home menu-icon" />
             </Link>
-          </li>
+          </li> */}
           <li className="nav-item"> 
             <a className="nav-link" data-toggle="collapse" href="#list-seller" 
                 aria-expanded="true" aria-controls="list-seller">
@@ -31,7 +31,17 @@ export default class Menu extends Component {
                 Seller
               </span>
               <i className="menu-arrow" />
-              <i className="mdi mdi-shopping menu-icon" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-building-store" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
+               stroke={menuStore.option.charAt(0) === "1" ? "#f54b24" : "#ffffff"} fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                <line x1="3" y1="21" x2="21" y2="21" />
+                <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+                <line x1="5" y1="21" x2="5" y2="10.85" />
+                <line x1="19" y1="21" x2="19" y2="10.85" />
+                <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+              </svg>
+              {/* <img src="/assets/icon/booth.png" alt="booth"/> */}
+              {/* <i className="mdi mdi-shopping menu-icon" /> */}
             </a>
             <div className="collapse show" id="list-seller">
               <ul className="nav flex-column sub-menu">
@@ -53,7 +63,7 @@ export default class Menu extends Component {
               </ul>
             </div>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <a className="nav-link" data-toggle="collapse" href="#list-setting" 
                 aria-expanded="false" aria-controls="list-setting">
               <span className="menu-title"  style={{color: menuStore.option.charAt(0) === "2" ? "#f54b24" : ""}}>
@@ -61,7 +71,6 @@ export default class Menu extends Component {
               </span>
               <i className="menu-arrow" />
               <i className="mdi mdi-settings menu-icon" />
-              {/* <i className="mdi mdi-crosshairs-gps menu-icon" /> */}
             </a>
             <div className="collapse" id="list-setting">
               <ul className="nav flex-column sub-menu">
@@ -83,6 +92,7 @@ export default class Menu extends Component {
               </ul>
             </div>
           </li>
+           */}
           {/* <li className="nav-item sidebar-actions">
             <span className="nav-link">
               <div className="border-bottom">

@@ -9,6 +9,7 @@ import { crawlSellerStore } from "./crawlSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Link } from "react-router-dom";
 import { menuStore } from "../menu/menuStore";
+import { notify } from './../../common/notify/NotifyService';
 
 interface CrawlSellerProps {
   history: { push: (path: string) => any };
@@ -16,6 +17,7 @@ interface CrawlSellerProps {
 }
 @observer
 export default class CrawlSeller extends Component<CrawlSellerProps, any> {
+  private dataPost: string[] = [];
   menu: any = (
     <Menu>
       <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
@@ -146,61 +148,32 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   showDetail = (str: string) => {
     this.props.history.push(`/shop-detail?id=${str}`);
   }
-  // data = [
-  //   {
-  //     key: "1",
-  //     _id: '1',
-  //     name: 'Mike',
-  //     phone_numbers: ["0985299551"],
-  //     quantity: 32,
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //   },
-  //   {
-  //     key: "2",
-  //     _id: '2',
-  //     name: 'Mike',
-  //     phone_numbers: [],
-  //     quantity: 32,
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //     action: ["1"]
-  //   },
-  //   {
-  //     key: "3",
-  //     _id: '3',
-  //     name: 'Mike',
-  //     phone_numbers: [],
-  //     quantity: 32,
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //     action: ["1"]
-  //   },
-  // ];
   onChange = (page: number) => {
     crawlSellerStore.currentPage = page;
     this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
   }
-  rowSelection: any = {
-    onChange: (selectedRowKeys:any, selectedRows:any) => {
-      crawlSellerStore.selectedRowKeys = selectedRowKeys;
-    }
-  };
+
   handleApprove = async () => {
-    // const resultApi = await callApi(
-    //   `v1/crawlers/shopee/shops/raw?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
-    //   "POST",
-    //   {},
-    //   false
-    //   );
-    // if (resultApi.result.status === 200) {
-    //   rawSellerStore.getDate(resultApi.result.data.data);
-    //   rawSellerStore.data = resultApi.result.data.data;
-    //   rawSellerStore.totalPage = resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize;
-    //   // console.log("data : ", resultApi.result.data.pagination.total_elements);
-    // }
+    const resultApi = await callApi(
+      `v1/crawlers/shopee/approved-shops`,
+      "POST",
+      {"shop_ids": this.dataPost},
+      false
+      );
+    if (resultApi.result.status === 200) {
+      crawlSellerStore.selectedRowKeys = [];
+      notify.show(" Approved ", "success")
+      // console.log("data : ", resultApi.result.data.pagination.total_elements);
+    }
   }
   render() {
+    const rowSelection: any = {
+      onChange: (selectedRowKeys:any, selectedRows:any) => {
+        crawlSellerStore.selectedRowKeys = selectedRowKeys;
+        this.dataPost = selectedRowKeys;
+      },
+      selectedRowKeys: crawlSellerStore.selectedRowKeys, 
+    };
     return (
       <React.Fragment>
         <div className="nav-table">
@@ -243,7 +216,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         </div>
         <p style={{margin: "10px"}}>Total : {crawlSellerStore.totalShops} shops</p>
         {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false}/> */}
-        <Table rowSelection={{...this.rowSelection}}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
+        <Table rowSelection={rowSelection}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
         <Pagination current={crawlSellerStore.currentPage} onChange={this.onChange} total={crawlSellerStore.totalPage * 10} showSizeChanger={false} />
       </React.Fragment>
     );

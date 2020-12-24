@@ -44,63 +44,63 @@ export default class About extends Component<any, any> {
   }
   render() {
     return (
-      <table style={{width: "100%", backgroundColor: "#fff"}}>
-            <tr>
-              <th style={{paddingLeft: "37px"}}>Seller Information</th>
-              <th style={{textAlign: "right"}} >
-              { !shopDetailStore.edit ? 
-                <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 20px"}} onClick={shopDetailStore.editDetail}>
-                  Edit
-                </Button>
-                :
-                <React.Fragment>
-                  <Button type="primary" style={{margin: "5px 10px"}} >
-                    Save
-                  </Button>
-                  <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={shopDetailStore.editDetail}>
-                    Cancel
-                  </Button>
-                </React.Fragment>
-              }
-              </th> 
-            </tr>
-            <tr>
-              <td>
-                {this.elementDetail("Name", this.props.info.username)}
-                {this.elementDetail("Email", this.props.info.email)}
-              </td>
-              <td>
-                {this.elementDetail("Phone", this.props.info.phone_numbers)}
-                {this.elementDetail("Birthday", this.props.info.created_at)}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                {this.elementDetail("Shop Name", this.props.info.name)}
-                {this.elementDetail("Contact Name", this.props.info.name)}
-                {this.elementDetail("Email", this.props.info.email)}
-              </td>
-              <td>
-                {this.elementDetail("Register Time", this.props.info.created_at)}
-                {this.elementDetail("Shop Type", this.props.info.type)}
-                {this.elementDetail("Phone", this.props.info.phone_numbers)}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <p className="span-title"><i className="mdi mdi-flag-triangle"/>WAREHOUSE</p>
-                {this.elementDetail("Name", this.props.info.name)}
-                {this.elementDetail("Phone", this.props.info.name)}
-                {this.elementDetail("Address", this.props.info.name)}
-              </td>
-              <td>
-                <p className="span-title"><i className="mdi mdi-flag-triangle"/>RETURN</p>
-                {this.elementDetail("Name", this.props.info.nameWarehouse)}
-                {this.elementDetail("Phone", this.props.info.phone_numbers)}
-                {this.elementDetail("Address", this.props.info.address)}
-              </td>
-            </tr>
-          </table>
+      <table className="table-about" style={{width: "100%", backgroundColor: "#fff"}}>
+        <tr>
+          <th style={{paddingLeft: "37px"}}>Seller Information</th>
+          <th style={{textAlign: "right"}} >
+          { !shopDetailStore.edit ? 
+            <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 20px"}} onClick={shopDetailStore.editDetail}>
+              Edit
+            </Button>
+            :
+            <React.Fragment>
+              <Button type="primary" style={{margin: "5px 10px"}} >
+                Save
+              </Button>
+              <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={shopDetailStore.editDetail}>
+                Cancel
+              </Button>
+            </React.Fragment>
+          }
+          </th> 
+        </tr>
+        <tr>
+          <td>
+            {this.elementDetail("Name", this.props.info.username)}
+            {this.elementDetail("Email", this.props.info.email)}
+          </td>
+          <td>
+            {this.elementDetail("Phone", this.props.info.phone_numbers)}
+            {this.elementDetail("Birthday", this.props.info.created_at)}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            {this.elementDetail("Shop Name", this.props.info.name)}
+            {this.elementDetail("Contact Name", this.props.info.name)}
+            {this.elementDetail("Email", this.props.info.email)}
+          </td>
+          <td>
+            {this.elementDetail("Register Time", this.props.info.created_at)}
+            {this.elementDetail("Shop Type", this.props.info.type)}
+            {this.elementDetail("Phone", this.props.info.phone_numbers)}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p className="span-title"><i className="mdi mdi-flag-triangle"/>WAREHOUSE</p>
+            {this.elementDetail("Name", this.props.info.name)}
+            {this.elementDetail("Phone", this.props.info.name)}
+            {this.elementDetail("Address", this.props.info.name)}
+          </td>
+          <td>
+            <p className="span-title"><i className="mdi mdi-flag-triangle"/>RETURN</p>
+            {this.elementDetail("Name", this.props.info.nameWarehouse)}
+            {this.elementDetail("Phone", this.props.info.phone_numbers)}
+            {this.elementDetail("Address", this.props.info.address)}
+          </td>
+        </tr>
+      </table>
     )
   }
 }
