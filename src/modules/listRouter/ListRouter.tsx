@@ -16,7 +16,7 @@ export const ListRouter = () => {
     <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/raw-seller" component={RawSeller} />
-          <Route exact path="/crawl-seller" component={CrawlSeller} />
+          <Route exact path="/crawled-sellers" component={CrawlSeller} />
           <Route exact path="/crawling-addition" component={Crawling} />
           <Route exact path="/shop-detail" component={ShopDetail} />
           <Route exact path="/404.html" component={NotFound} />

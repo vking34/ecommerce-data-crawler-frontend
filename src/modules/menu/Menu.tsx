@@ -10,9 +10,9 @@ export default class Menu extends Component {
   private menuRef =React.createRef<HTMLDivElement>();
   urlRawSeller = `/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
   urlCrawlSeller = crawlSellerStore.state === "STATE" ? 
-   `/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+   `/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
    :
-   `/crawl-seller?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+   `/crawled-sellers?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
   
   render() {
     return (
@@ -52,7 +52,7 @@ export default class Menu extends Component {
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to={this.urlCrawlSeller} style={{color: menuStore.option === "1Crawl" ? "#f54b24" : ""}} onClick={() => menuStore.changeOption("1Crawl")}>
-                    Crawl Seller
+                    Crawled Seller
                   </Link>
                 </li>
                 <li className="nav-item">

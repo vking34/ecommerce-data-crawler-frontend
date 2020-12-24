@@ -50,9 +50,9 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   handleFilterState = (str: string) => {
     crawlSellerStore.state = str;
     if(str === "STATE"){
-      this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
     }else{
-      this.props.history.push(`/crawl-seller?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+      this.props.history.push(`/crawled-sellers?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
     }
   }
   componentDidMount() {
@@ -90,7 +90,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         // console.log("data : ", resultApi.result.data.data);
       }
     }else {
-      this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
     }
   };
 
@@ -150,7 +150,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   }
   onChange = (page: number) => {
     crawlSellerStore.currentPage = page;
-    this.props.history.push(`/crawl-seller?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+    this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
   }
 
   handleApprove = async () => {

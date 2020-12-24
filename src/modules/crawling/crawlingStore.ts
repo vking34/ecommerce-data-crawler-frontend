@@ -17,7 +17,7 @@ class CrawlingStore {
   }
   
   deletePropShops = async (index: number) => {
-    let indexStr = index.toString();
+    let indexStr = index.toString().trim();
     if(this.itemsMap.length > 1){
       this.itemsMap = await this.itemsMap.filter((item) => item !== index );
     }

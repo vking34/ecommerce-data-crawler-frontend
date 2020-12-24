@@ -13,7 +13,7 @@ import { notify } from '../../../common/notify/NotifyService';
 export default class Product extends Component<any> {
 
   componentDidMount() {
-    console.log("id : ", this.props.id, " - ", shopDetailStore.id);
+    // console.log("id : ", this.props.id, " - ", shopDetailStore.id);
     this.requestAPI();
   }
   

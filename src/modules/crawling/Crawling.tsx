@@ -19,7 +19,7 @@ export default class Crawling extends Component<CrawlingProps, any> {
   private readonly inputRef: React.RefObject<any> = createRef();
   private dataPost: string[] = [];
   componentDidMount() {
-    this.inputRef.current!.focus();
+    // this.inputRef.current!.focus();
     menuStore.changeOption("1Crawling");
   }
 
@@ -48,13 +48,13 @@ export default class Crawling extends Component<CrawlingProps, any> {
   change = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if(event.key ==="Enter"){
       this.handleAddItem();
-      this.inputRef.current!.focus();
+      // this.inputRef.current!.focus();
     }
   }
   handleAddItem = () => {
     crawlingStore.items ++;
     crawlingStore.itemsMap.push(crawlingStore.items);
-    this.inputRef.current!.focus();
+    // this.inputRef.current!.focus();
   }
   handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name , value} = event.target; 
@@ -78,6 +78,7 @@ export default class Crawling extends Component<CrawlingProps, any> {
     },
   };
   render() {
+    const length = crawlingStore.itemsMap.length;
     return (
       <React.Fragment>  
         <Upload {...this.propsUpload} className="load-file">
@@ -87,9 +88,11 @@ export default class Crawling extends Component<CrawlingProps, any> {
           return (
             <div className="item" key={index} style={{width : "70%"}}>
               {/* {item} - {crawlingStore.shops[item]} */}
-              {index + 1 === crawlingStore.itemsMap.length ? 
-                <Input name={item.toString()} placeholder="https:// ..." style={{margin: "10px "}} 
-                      onKeyDown={this.change} ref={this.inputRef} onChange={this.handleInput} value= {crawlingStore.shops[item]} />
+              {/* {length} */}
+              {index + 1 === length ? 
+              // {index + 1 === crawlingStore.itemsMap.length ? 
+                <Input name={item.toString()} placeholder="https:// ..." style={{margin: "10px "}} autoFocus
+                      onKeyDown={this.change} onChange={this.handleInput} value= {crawlingStore.shops[item]} />
                 :
                 <Input name={item.toString()} placeholder="https:// ..." style={{margin: "10px "}} onKeyDown={this.change} 
                         onChange={this.handleInput} value= {crawlingStore.shops[item]}  />

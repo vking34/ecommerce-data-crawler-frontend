@@ -21,7 +21,7 @@ export default class ShopDetail extends Component<any> {
       const params = new myShopDetailParam(this.props.location.search)
       shopDetailStore.id = params.getId;
       if(shopDetailStore.id === ""){
-        this.props.history.push(`/crawl-seller`) ;
+        this.props.history.push(`/crawled-sellers`) ;
       } 
       const resultApi = await callApi(
         `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}`,
@@ -37,7 +37,7 @@ export default class ShopDetail extends Component<any> {
       }
     }
     else {
-      this.props.history.push(`/crawl-seller`)  ;
+      this.props.history.push(`/crawled-sellers`)  ;
     }
   }
   showProducts = async () => {
