@@ -139,7 +139,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         </>
       ),
     },
-    // { title: "Products Quantity", dataIndex: "quantity"},
+    { title: "Products Quantity", dataIndex: "total_products"},
     { title: "State", dataIndex: "state" },
     { title: "Update At", dataIndex: "updated_at" },
     { title: "Action", dataIndex:"_id",
