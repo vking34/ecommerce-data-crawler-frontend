@@ -16,6 +16,8 @@ class RawSellerStore {
   @observable endDate: string = Moment.getDate(this.currentDate.getTime(),"yyyy-mm-dd");
   @observable startDate: string = Moment.getDate(new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1).getTime(), "yyyy-mm-dd");
   @observable selectedRowKeys: any = [];
+  @observable phone: any = "ALL";
+
   getDate = (data: any) => {
     data.map((item: any, key: number) => {
       // var dateStr = JSON.parse("\"2014-01-01T23:28:56.782Z\"");

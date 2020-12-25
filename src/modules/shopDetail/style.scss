@@ -1,13 +1,10 @@
+@import "./components/css/aboutStyle.scss";
+@import "./components/css/productStyle.scss";
+
 @mixin shopDetail {
   .shop-detail {
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    th, td {
-      border-right: none;
-      border-left: none;
-    }
+    @include about-product;
+    @include product-style;
     h3 {
       font-size: 19px;
     }
@@ -43,5 +40,6 @@
     .ant-empty-description {
       justify-content: center;
     }
+
   }
 }

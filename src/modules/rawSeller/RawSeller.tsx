@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { Component } from "react";
 import { Table, DatePicker, Pagination} from "antd";
 import { observer } from "mobx-react";
@@ -37,7 +38,14 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       </Menu.Item>
     </Menu>
   );
-
+  handleFilterPhone = (str: any) => {
+    rawSellerStore.phone = str;
+    if(str === "ALL"){
+      this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`)
+    }else{
+      this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${str}`)
+    }
+  }
   componentDidMount() {
     menuStore.changeOption("1Raw");
     this.requestAPI();
@@ -51,11 +59,11 @@ export default class RawSeller extends Component<RawSellerProps, any> {
   requestAPI = async () => {
     if(this.props.location.search){
       const params = new myRawSellerParam(this.props.location.search)
-      rawSellerStore.state = params.getState;
+      rawSellerStore.phone = params.getPhone;
       rawSellerStore.currentPage = params.getPage;
       rawSellerStore.pageSize = params.getLimit;
       const resultApi = await callApi(
-        `v1/crawlers/shopee/raw-shops?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`,
+        `v1/crawlers/shopee/raw-shops?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${rawSellerStore.phone}`,
         "GET",
         {},
         false
@@ -67,7 +75,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
         // console.log("data : ", resultApi.result.data.pagination.total_elements);
       }
     }else {
-      this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`)  
+      this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${rawSellerStore.phone}`)  
     }
   };
   // handlPage = (e: any)=> {
@@ -121,35 +129,15 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     { title: "Update At", dataIndex: "updated_at"},
     // { title: "Crawl Status", dataIndex: "status"},
   ]; 
-  // data = [
-  //   {
-  //     key: "1",
-  //     _id: '1',
-  //     name: 'Mike',
-  //     phone_numbers: ["0985299551"],
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //   },
-  //   {
-  //     key: "5",
-  //     _id: '5',
-  //     name: 'Mike',
-  //     phone_numbers: [],
-  //     state: "DONE",
-  //     updated_at: "23/12/2020",
-  //     action: ["1"]
-  //   },
-  // ];
 
   onChange = (page: number) => {
     // console.log("page : " , page);
     rawSellerStore.currentPage = page;
-    this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`)
+    this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${rawSellerStore.phone}`)
   }
   filterDate = (e: any) => {
     rawSellerStore.startDate = Moment.getDate(e[0]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
     rawSellerStore.endDate = Moment.getDate(e[1]._d.getTime(), "yyyy-mm-dd"); // _d -> date 
-    // console.log( "date : " , rawSellerStore.startDate , " -> ", rawSellerStore.endDate);
   }
 
 
@@ -168,8 +156,20 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     }
   }
   render() {
+    const menuPhone: any = (
+      <Menu>
+        <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>} onClick={() => this.handleFilterPhone("ALL")}>
+          <span style={{color: rawSellerStore.phone == "ALL" ? "#f54b24" : ""}}>ALL</span>
+        </Menu.Item>
+        <Menu.Item key="2" icon={<i className="mdi mdi-crosshairs-gps"/>} onClick={() => this.handleFilterPhone(1)}>
+          <span style={{color: rawSellerStore.phone == 1 ? "#f54b24" : ""}}>TRUE</span>
+        </Menu.Item>
+        <Menu.Item key="3" icon={<i className="mdi mdi-crosshairs-gps"/>} onClick={() => this.handleFilterPhone(0)}>
+          <span style={{color: rawSellerStore.phone == 0 ? "#f54b24" : ""}}>FALSE</span>
+        </Menu.Item>
+      </Menu>
+    );
     const rowSelection: any = {
-      // selectedRowKey: rawSellerStore.selectedRowKeys,
       onChange: (selectedRowKeys:any, selectedRows:any) => {
         rawSellerStore.selectedRowKeys = selectedRowKeys;
         this.dataPost = selectedRowKeys;
@@ -202,9 +202,9 @@ export default class RawSeller extends Component<RawSellerProps, any> {
                 {rawSellerStore.market} <DownOutlined />
               </Button>
             </Dropdown>
-            <Dropdown overlay={this.menu}>
+            <Dropdown overlay={menuPhone}>
               <Button>
-                {rawSellerStore.phoneNumber} <DownOutlined />
+                Phone Number <DownOutlined />
               </Button>
             </Dropdown>
             <Dropdown overlay={this.menu}>

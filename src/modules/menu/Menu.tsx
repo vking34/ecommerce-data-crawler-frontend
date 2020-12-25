@@ -8,11 +8,11 @@ import { crawlSellerStore } from "../crawlSeller/crawlSellerStore";
 @observer
 export default class Menu extends Component {
   private menuRef =React.createRef<HTMLDivElement>();
-  urlRawSeller = `/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}`;
+  urlRawSeller = `/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${rawSellerStore.phone}`;
   urlCrawlSeller = crawlSellerStore.state === "STATE" ? 
-   `/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+   `/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`
    :
-   `/crawled-sellers?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+   `/crawled-sellers?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`
   
   render() {
     return (

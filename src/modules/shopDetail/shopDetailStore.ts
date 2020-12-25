@@ -18,12 +18,15 @@ class ShopDetailStore {
   @observable id: string = "";  
   @observable data: any = {};
   @observable info: any = {};
-  @observable infoProducts: any = [];
+  @observable infoProducts: any[] = [];
   @observable shop: any = {};
   @observable pageSizeProducts: number = 10;
   @observable currentPage: number = 1;
   @observable totalPage: number = 1;
+  @observable totalProducts: number = 1;
   @observable selectedRowKeys: string[] = [];
+  @observable handleModal: boolean = false;
+  @observable product_id: string = "";
   editDetail = () => { 
     this.edit = !this.edit;
   }

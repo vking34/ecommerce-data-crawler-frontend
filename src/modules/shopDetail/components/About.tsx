@@ -44,7 +44,7 @@ export default class About extends Component<any, any> {
   }
   render() {
     return (
-      <table className="table-about" style={{width: "100%", backgroundColor: "#fff"}}>
+      <table className="table-about about-product">
         <tr>
           <th style={{paddingLeft: "37px"}}>Seller Information</th>
           <th style={{textAlign: "right"}} >

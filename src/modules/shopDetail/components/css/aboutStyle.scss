@@ -1,0 +1,15 @@
+@mixin about-product {
+  .about-product {
+    background-color: #ffffff;
+    width: 100%;
+    border: 1px solid black;
+    th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      border-right: none;
+      border-left: none;
+    }
+  }
+}

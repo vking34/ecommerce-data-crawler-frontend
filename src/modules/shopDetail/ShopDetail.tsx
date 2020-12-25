@@ -42,20 +42,6 @@ export default class ShopDetail extends Component<any> {
   }
   showProducts = async () => {
     shopDetailStore.showAbout = false;
-    // const resultApi = await callApi(
-    //   `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
-    //   // `v1/crawlers/shopee/converted-shops/SHOPEE.107287927/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
-    //   "GET",
-    //   {}, 
-    //   false
-    //   )
-
-    // if (resultApi.result.status === 200) {
-    //   shopDetailStore.getDate(resultApi.result.data.data);
-    //   shopDetailStore.infoProducts = resultApi.result.data.data;
-    //   shopDetailStore.totalPage = resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts;
-    //   // console.log("data : ", resultApi.result.data);
-    // }
   }
   handleApprove = async () => {
     const resultApi = await callApi(
@@ -75,17 +61,23 @@ export default class ShopDetail extends Component<any> {
         <div className="nav-option" style={{backgroundColor: "#fff"}}>
           <div className={shopDetailStore.showAbout ? "about active" : "about" } onClick={() => shopDetailStore.showAbout = true}>ABOUT</div>
           <div className={shopDetailStore.showAbout ? "product" : " product active" } onClick={this.showProducts}>PRODUCT</div>
+ 
           {shopDetailStore.showAbout && 
-            <Button type="primary" className="approve-btn-detail" onClick={this.handleApprove}>
-              Approve Shop
-            </Button>
+            <React.Fragment>
+              <Button type="primary" className="btn-back" onClick={() => this.props.history.push("/crawled-sellers")}>
+                Back
+              </Button>
+              <Button type="primary" className="approve-btn-detail" onClick={this.handleApprove}>
+                Approve Shop
+              </Button>
+            </React.Fragment>
           }
         </div>
         <div className="info-main shop-detail" >
         {shopDetailStore.showAbout ? 
           <About info={shopDetailStore.info} />
           :
-          <Product infoProducts = {shopDetailStore.infoProducts} id={shopDetailStore.id}/>
+          <Product infoProducts = {shopDetailStore.infoProducts} id={shopDetailStore.id} history={this.props.history}/>
         }
 
         </div>

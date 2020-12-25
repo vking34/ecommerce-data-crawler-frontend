@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { Component } from "react";
 import { Pagination, Table } from "antd";
 import { observer } from "mobx-react";
@@ -47,12 +48,20 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
       </Menu.Item>
     </Menu>
   );
+  handleFilterPhone = (str: any) => {
+    crawlSellerStore.phone = str;
+    if(str === "ALL"){
+      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+    }else{
+      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${str}`)
+    }
+  }
   handleFilterState = (str: string) => {
     crawlSellerStore.state = str;
     if(str === "STATE"){
-      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`)
     }else{
-      this.props.history.push(`/crawled-sellers?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+      this.props.history.push(`/crawled-sellers?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`)
     }
   }
   componentDidMount() {
@@ -69,13 +78,14 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
     let url: string = "/"; 
     if(this.props.location.search){
       const params = new myCrawlSellerParam(this.props.location.search)
+      crawlSellerStore.phone = params.getPhone;
       crawlSellerStore.state = params.getState;
       crawlSellerStore.currentPage = params.getPage;
       crawlSellerStore.pageSize = params.getLimit;
       url = crawlSellerStore.state === "STATE" ? 
-        `v1/crawlers/shopee/converted-shops?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+        `v1/crawlers/shopee/converted-shops?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`
         :
-        `v1/crawlers/shopee/converted-shops?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`
+        `v1/crawlers/shopee/converted-shops?state=${crawlSellerStore.state}&page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`
       const resultApi = await callApi(
         url,
         "GET",
@@ -90,7 +100,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         // console.log("data : ", resultApi.result.data.data);
       }
     }else {
-      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+      this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`)
     }
   };
 
@@ -124,23 +134,18 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
               </div>
             </React.Fragment>
             :
-            <span style={{opacity: "0.7"}}>null</span>
+            <span style={{opacity: "0.7", margin: "0 15px"}}>null</span>
           }
         </>
       ),
     },
-    { title: "Products Quantity", dataIndex: "quantity"},
+    // { title: "Products Quantity", dataIndex: "quantity"},
     { title: "State", dataIndex: "state" },
-    // { title: "Chozoi Status", dataIndex: "state"},
     { title: "Update At", dataIndex: "updated_at" },
     { title: "Action", dataIndex:"_id",
       render: (_id: string) => (
-        // <i className="fas fa-pencil-alt"></i>
         <>
-          {/* {_id} */}
-          {/* <Link to="/shop-detail"> */}
             <i className="fas fa-pencil-alt" style={{margin: "0 10px"}} onClick={() => this.showDetail(_id)}></i>
-          {/* </Link> */}
         </>
       )
     },
@@ -150,7 +155,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   }
   onChange = (page: number) => {
     crawlSellerStore.currentPage = page;
-    this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}`)
+    this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`)
   }
 
   handleApprove = async () => {
@@ -167,6 +172,19 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
     }
   }
   render() {
+    const menuPhone: any = (
+      <Menu>
+        <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>} onClick={() => this.handleFilterPhone("ALL")}>
+          <span style={{color: crawlSellerStore.phone == "ALL" ? "#f54b24" : ""}}>ALL</span>
+        </Menu.Item>
+        <Menu.Item key="2" icon={<i className="mdi mdi-crosshairs-gps"/>} onClick={() => this.handleFilterPhone(1)}>
+          <span style={{color: crawlSellerStore.phone == 1 ? "#f54b24" : ""}}>TRUE</span>
+        </Menu.Item>
+        <Menu.Item key="3" icon={<i className="mdi mdi-crosshairs-gps"/>} onClick={() => this.handleFilterPhone(0)}>
+          <span style={{color: crawlSellerStore.phone == 0 ? "#f54b24" : ""}}>FALSE</span>
+        </Menu.Item> 
+      </Menu>
+    );
     const rowSelection: any = {
       onChange: (selectedRowKeys:any, selectedRows:any) => {
         crawlSellerStore.selectedRowKeys = selectedRowKeys;
@@ -191,6 +209,11 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
             <Dropdown overlay={this.menu}>
               <Button >
                 {crawlSellerStore.market} <DownOutlined />
+              </Button>
+            </Dropdown>
+            <Dropdown overlay={menuPhone}>
+              <Button >
+                Phone Number <DownOutlined />
               </Button>
             </Dropdown>
             <Dropdown overlay={this.menuState}>

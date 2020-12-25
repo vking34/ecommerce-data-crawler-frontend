@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import { shopDetailStore } from './../shopDetailStore';
 import { callApi } from '../../../utils/callAPI';
 import { notify } from '../../../common/notify/NotifyService';
-
+import ModalProduct from "./ModalProduct";
 // interface ProductProps {
 //   infoProducts: any
 // }
@@ -13,15 +13,16 @@ import { notify } from '../../../common/notify/NotifyService';
 export default class Product extends Component<any> {
 
   componentDidMount() {
-    // console.log("id : ", this.props.id, " - ", shopDetailStore.id);
     this.requestAPI();
+  }
+  componentWillUnmount(){
   }
   
   columns: any = [
     { title: "Image", dataIndex: "images", width: "100px",
       render: (src: any) => (
         <>
-          <img src={src[0].image_url} alt="img" style={{width: "79%"}}/>
+          <img src={src[0]?.image_url} alt="img" style={{width: "79%"}}/>
         </>
       )
     },
@@ -29,7 +30,7 @@ export default class Product extends Component<any> {
     { title: "Category", dataIndex: "category", key: "category" ,
       render: (category: any) => (
         <>
-          {category.id}
+          {category?.id}
         </>
       )
     },
@@ -42,17 +43,21 @@ export default class Product extends Component<any> {
     },
     { title: "Status", dataIndex: "status", key: "status" },
     { title: "Update At", dataIndex: "updated_at", key: "updated_at" },
-    { title: "Action", dataIndex:"action", key: "action",
-      render: (id: any) => (
-        // <i className="fas fa-pencil-alt"></i>
-        <>
-          {/* <Link to="/shop-detail"> */}
-            <i className="fas fa-pencil-alt" style={{margin: "0 10px"}}></i>
-          {/* </Link> */}
-        </>
-      )
+    { title: "Action", dataIndex:"product_id",
+      render: (product_id: string) => {
+        return (
+        <> 
+          <i className="fas fa-pencil-alt" style={{margin: "0 10px"}} onClick={() => this.showModalProduct(product_id)}></i>
+        </> 
+        )
+      }
     },
   ];
+
+  showModalProduct = (str: string) => {
+    shopDetailStore.handleModal = true;
+    shopDetailStore.product_id = str; 
+  }
   menu: any = (
     <Menu>
       <Menu.Item key="1" icon={<i className="mdi mdi-crosshairs-gps"/>}>
@@ -77,7 +82,6 @@ export default class Product extends Component<any> {
   requestAPI = async () => {
       const resultApi = await callApi(
         `v1/crawlers/shopee/converted-shops/${this.props.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
-        // `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
         "GET",
         {},
         false
@@ -85,6 +89,7 @@ export default class Product extends Component<any> {
       if (resultApi.result.status === 200) {
         shopDetailStore.getDate(resultApi.result.data.data);
         shopDetailStore.infoProducts = resultApi.result.data.data;
+        shopDetailStore.totalProducts = resultApi.result.data.pagination.total_elements;
         shopDetailStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts);
         // console.log("data : ", resultApi.result.data);
       }
@@ -136,11 +141,16 @@ export default class Product extends Component<any> {
             </Button> 
           </div>
           <div className="right-option">
+            <Button type="primary" style={{border: "none",margin: "10px", backgroundColor: "#ffa009"}} onClick={() => this.props.history.push("/crawled-sellers")}>
+              Back
+            </Button>
             <Button type="primary" style={{border: "none",margin: "10px"}} onClick={this.handleApprove}>
               Approve
             </Button>
           </div>
         </div>
+        <p>Total : {shopDetailStore.totalProducts} products</p>
+        {shopDetailStore.handleModal && <ModalProduct isModalVisible={shopDetailStore.handleModal} /> }
         <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={this.props.infoProducts} columns={this.columns} pagination={false}/>
         <Pagination current={shopDetailStore.currentPage} onChange={this.onChange} total={shopDetailStore.totalPage * 10} showSizeChanger={false} />
       </React.Fragment> 

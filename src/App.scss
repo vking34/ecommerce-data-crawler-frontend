@@ -4,6 +4,9 @@
 img {
   width: 100%;
 }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Courier New', Courier, monospace !important;
+}
 i.mdi-crosshairs-gps {
   margin: 5px !important;
 }
@@ -90,6 +93,12 @@ i.fa-download {
   right: 10px;
   top: 1px;
 }
+.btn-back {
+  background-color: #ffa009 !important;
+  position: absolute !important;
+  right: 150px;
+  top: 1px;
+}
 .ant-picker-range {
   width: 221px;
 } 
@@ -118,6 +127,42 @@ nav a{
 }
 .dropdown .dropdown-menu .dropdown-item:hover  {
   background-color: #1da1f2;
+}
+.ant-modal-body {
+  position: relative;
+  .img-content-product{
+    display: flex;
+    margin: 5px;
+    .imgs {
+      width: 65%;
+      display: flex;
+      flex-wrap: wrap;
+      img{
+        width: 30%;
+        margin: 5px;
+      }
+    }
+    .content-detail-product {
+      width: 50%;
+      margin: 5px;
+      .modal-info {
+        margin: 15px 5px;
+        display: flex;
+        & > h3 {
+          font-weight: 600;
+          font-size: 19px;
+          width: 199px;
+        }
+        & > p {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin: 0 10px
+        }
+      }
+
+    }
+  }
 }
 
 @include shopDetail;

@@ -1,4 +1,4 @@
-import { rawSellerStore } from '../rawSellerStore';
+// import { rawSellerStore } from '../rawSellerStore';
 // import { Moment } from '../../../common/Moment';
 
 export default class myRawSellerParam extends URLSearchParams {
@@ -7,12 +7,12 @@ export default class myRawSellerParam extends URLSearchParams {
     Object.setPrototypeOf(this, myRawSellerParam.prototype)
   }
 
-  get getState(): String{
-    let state: any = this.get('state') || null;
-    if(state === undefined || state == null){
-      state = "all";
+  get getPhone(): any{
+    let phone: any = this.get('phone_numbers') || null;
+    if(phone === undefined || phone == null){
+      phone = "ALL";
     }
-    return state;
+    return phone;
   }
   get getPage(): number{
     let page: any = this.get("page") || null ;
