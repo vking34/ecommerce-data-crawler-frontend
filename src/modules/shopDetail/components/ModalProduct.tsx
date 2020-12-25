@@ -20,7 +20,7 @@ export default class ModalProduct extends Component<any> {
       <React.Fragment>
         <Modal visible={shopDetailStore.handleModal} width={1000} onCancel={() => shopDetailStore.handleModal = false}>
           <Button className="btn-edit" type="primary" style={{backgroundColor: "#f4b658"}}>
-            Edit 
+            Edit     
           </Button>
           {shopDetailStore.infoProducts.map((item: any, index: number) => {
             if(item.product_id === shopDetailStore.product_id){

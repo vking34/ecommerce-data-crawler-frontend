@@ -147,11 +147,13 @@ nav a{
       margin: 5px;
       .modal-info {
         margin: 15px 5px;
-        display: flex;
+        float: left;
+        width: 100%;
         & > h3 {
           font-weight: 600;
           font-size: 19px;
           width: 199px;
+          float: left;
         }
         & > p {
           display: flex;
