@@ -93,9 +93,9 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     { title: "Shop", dataIndex: "name",
       render: (name: string) => (
         <>
-          <Link to= "/shop-detail">
+          {/* <Link to= "/shop-detail"> */}
             <p>{name}</p>
-          </Link>
+          {/* </Link> */}
         </>
       )
     },
