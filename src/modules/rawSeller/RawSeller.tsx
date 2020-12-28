@@ -70,6 +70,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       if (resultApi.result.status === 200) {
         rawSellerStore.getDate(resultApi.result.data.data);
         rawSellerStore.data = resultApi.result.data.data;
+        rawSellerStore.totalShops = resultApi.result.data.pagination.total_elements;
         rawSellerStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize);
         // console.log("data : ", resultApi.result.data.pagination.total_elements);
       }
@@ -193,11 +194,11 @@ export default class RawSeller extends Component<RawSellerProps, any> {
               format={"YYYY/MM/DD"}
               onChange={this.filterDate}
             />
-            <Dropdown overlay={this.menu}>
+            {/* <Dropdown overlay={this.menu}>
               <Button>
                 {rawSellerStore.market} <DownOutlined />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown overlay={menuPhone}>
               <Button>
                 Phone Number <DownOutlined />
@@ -209,9 +210,9 @@ export default class RawSeller extends Component<RawSellerProps, any> {
               </Button>
             </Dropdown>
 
-            <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
+            {/* <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
               Filter
-            </Button>
+            </Button> */}
             <i className="fas fa-download" style={{fontSize: "30px", cursor: "pointer"}}></i>
           </div>
           <div className="right-option">
@@ -220,10 +221,11 @@ export default class RawSeller extends Component<RawSellerProps, any> {
             </Button>
           </div>
         </div>
+        <p style={{margin: "10px"}}>Total : {rawSellerStore.totalShops} shops</p>
         {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false} /> */}
         <Table rowSelection={rowSelection} dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
         <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} showSizeChanger={false}/>
-      </React.Fragment>
+      </React.Fragment> 
     );
   }
 }

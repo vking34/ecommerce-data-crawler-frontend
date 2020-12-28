@@ -206,11 +206,11 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
                 </div>
               </form>
             </div>
-            <Dropdown overlay={this.menu}>
+            {/* <Dropdown overlay={this.menu}>
               <Button >
                 {crawlSellerStore.market} <DownOutlined />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown overlay={menuPhone}>
               <Button >
                 Phone Number <DownOutlined />
@@ -221,9 +221,9 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
                 {crawlSellerStore.state} <DownOutlined />
               </Button>
             </Dropdown>
-            <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
+            {/* <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
               Filter
-            </Button>
+            </Button> */}
           </div>
           <div className="right-option">
             <Link to="/crawling-addition">
