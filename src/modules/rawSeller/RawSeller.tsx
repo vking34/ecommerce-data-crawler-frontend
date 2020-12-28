@@ -204,11 +204,11 @@ export default class RawSeller extends Component<RawSellerProps, any> {
                 Phone Number <DownOutlined />
               </Button>
             </Dropdown>
-            <Dropdown overlay={this.menu}>
+            {/* <Dropdown overlay={this.menu}>
               <Button>
                 {rawSellerStore.status} <DownOutlined />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
 
             {/* <Button type="primary" style={{backgroundColor: "#f54b24",border: "none"}}>
               Filter
