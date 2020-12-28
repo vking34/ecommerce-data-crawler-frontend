@@ -40,10 +40,10 @@ class ShopDetailStore {
     validate(name, value, this.errorInfo);
   }
   updateDetailShop = (keyValue: string, newValue: string) => {
-    this.shop = {
-      ...this.shop,
+    this.info = {
+      ...this.info,
       [keyValue]: newValue
-    }
+    };
   }
   getDate = (data: any) => {
     data.map((item: any, key: number) => {
