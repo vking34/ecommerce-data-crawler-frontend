@@ -9,16 +9,10 @@ import { callApi } from './../../../utils/callAPI';
 
 @observer
 export default class About extends Component<any, any> {
-  private listPhone: any = []
+  private listPhone: any = [] ;
   componentWillUnmount() {
     this.listPhone = []
-    // shopDetailStore.info?.phone_number !== undefined && shopDetailStore.info?.phone_number.map((item: any, index: any) => {
-    //   this.listPhone.push({
-    //     value: item
-    //   })
-    // })
   }
-  
   elementDetail = (title: string, content: any, name: string) => {
     if(title === "Birthday" || title === "Register Time"){
       content = this.handleDate(content);
@@ -61,18 +55,10 @@ export default class About extends Component<any, any> {
           { shopDetailStore.edit ? 
             <Input.Group compact style={{marginLeft: "61px"}} >
               <AutoComplete
-                // name={name}
                 onChange={this.handleInputMainPhone}
                 style={{ width: '70%' }}
                 placeholder="main phone"
-                options={
-                  // shopDetailStore.info?.phone_numbers !== undefined && shopDetailStore.info?.phone_numbers.map((phone_number: string, index: number) => {
-                  //   return {
-                  //     value: {phone_number}
-                  //   }
-                  // })
-                  this.listPhone
-                 }
+                options={this.listPhone}
                 // options={[{ value: 'text 1' }, { value: 'text 2' }]}
               />
             </Input.Group> 
