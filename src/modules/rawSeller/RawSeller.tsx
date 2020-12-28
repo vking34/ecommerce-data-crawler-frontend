@@ -10,7 +10,6 @@ import myRawSellerParam from "./components/myRawSellerParam";
 import { rawSellerStore } from "./rawSellerStore";
 import { callApi } from "../../utils/callAPI";
 import { Moment } from "../../common/Moment";
-import { Link } from "react-router-dom";
 import { menuStore } from "../menu/menuStore";
 // import { Link } from "react-router-dom";
 // import { DateRangePicker } from "rsuite";
@@ -78,9 +77,6 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${rawSellerStore.phone}`)  
     }
   };
-  // handlPage = (e: any)=> {
-  //   console.log("page : ", e);
-  // } 
   columns: any = [
     { title: "Id", dataIndex: "_id", },
     { title: "Username", dataIndex: "account",

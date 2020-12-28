@@ -31,7 +31,7 @@ export default class ShopDetail extends Component<any> {
         )
 
       if (resultApi.result.status === 200) {
-        shopDetailStore.data = resultApi.result.data;
+        // shopDetailStore.data = resultApi.result.data;
         shopDetailStore.info = resultApi.result.data;
         // console.log("data : ", resultApi.result.data);
       }
@@ -75,7 +75,7 @@ export default class ShopDetail extends Component<any> {
         </div>
         <div className="info-main shop-detail" >
         {shopDetailStore.showAbout ? 
-          <About info={shopDetailStore.info} />
+          <About/>
           :
           <Product infoProducts = {shopDetailStore.infoProducts} id={shopDetailStore.id} history={this.props.history}/>
         }
