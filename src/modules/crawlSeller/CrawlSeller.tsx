@@ -226,11 +226,6 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
             </Button> */}
           </div>
           <div className="right-option">
-            <Link to="/crawling-addition">
-              <Button type="primary" style={{ margin: "10px", width: "99px" }}>
-                Add
-              </Button>
-            </Link>
             <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.handleApprove}>
               Approve
             </Button>

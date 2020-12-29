@@ -17,9 +17,6 @@ export default class About extends Component<any, any> {
     if(title === "Birthday" || title === "Register Time"){
       content = this.handleDate(content);
     }
-    if(title === "Phone" && typeof(content) === "object"){
-      content = content.join(" / "); 
-    }
     return (
       <React.Fragment>
         {title !== "Description" ? <p>
@@ -33,9 +30,9 @@ export default class About extends Component<any, any> {
         <p> 
           <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
           { shopDetailStore.edit ?
-            <TextArea value={content} style={{height: "200px", marginLeft: "61px"}} name={name} onChange={this.handleInput}/>
+            <TextArea value={content} style={{minHeight: "200px", width: "70%", margin: "10px"}} name={name} onChange={this.handleInput}/>
           :
-            <TextArea value={content} style={{height: "200px", marginLeft: "61px"}} readOnly/>
+            <TextArea value={content} style={{minHeight: "200px", width: "70%", margin: "0px"}} readOnly/>
           }
         </p>
         }
@@ -53,8 +50,9 @@ export default class About extends Component<any, any> {
       <p>
         <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
           { shopDetailStore.edit ? 
-            <Input.Group compact style={{marginLeft: "61px"}} >
+            <Input.Group compact style={{margin: "10px", width: "70%"}} >
               <AutoComplete
+                value= {content}
                 onChange={this.handleInputMainPhone}
                 style={{ width: '70%' }}
                 placeholder="main phone"
@@ -71,7 +69,7 @@ export default class About extends Component<any, any> {
   elementListPhone = (title: string, content: any, name: string) => {
     return (
       <React.Fragment>
-        { !shopDetailStore.edit ? <p>
+        <p>
           <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
           <div className="dropdown show-dropdown option-main open">
                 <span data-toggle="dropdown" aria-expanded="true">
@@ -92,15 +90,7 @@ export default class About extends Component<any, any> {
                 })}
                 </ul>
               </div>
-        </p> : 
-        <p>
-          <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
-          { shopDetailStore.info?.phone_numbers !== undefined && shopDetailStore.info?.phone_numbers.map((phone_number: string, index: number) => {
-              return (
-                <Input placeholder={title} name={name} defaultValue={phone_number} onChange={this.handleInput} />
-              );
-          })}
-        </p>}
+        </p>
       </React.Fragment>
     )
   }
@@ -150,6 +140,19 @@ export default class About extends Component<any, any> {
       shopDetailStore.editDetail();
     }
   }
+  editDetail = async () => {
+      const resultApi = await callApi(
+        `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}`,
+        "GET",
+        {},
+        false
+        )
+
+      if (resultApi.result.status === 200) {
+        shopDetailStore.info = resultApi.result.data;
+      }
+    shopDetailStore.editDetail();
+  }
   render() {
     return (
       <table className="table-about about-product">
@@ -165,7 +168,8 @@ export default class About extends Component<any, any> {
               <Button type="primary" style={{margin: "5px 10px"}} onClick={this.saveChangeInfo} >
                 Save
               </Button>
-              <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={shopDetailStore.editDetail}>
+              <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={this.editDetail}>
+              {/* <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={shopDetailStore.editDetail}> */}
                 Cancel
               </Button>
             </React.Fragment>
@@ -183,8 +187,8 @@ export default class About extends Component<any, any> {
             {this.elementDetail("Description", shopDetailStore.info?.description, "description")}
             {this.elementDetail("Register Time", shopDetailStore.info?.created_at, "created_at")}
           </td>
-          <td>
-          </td>
+          {/* <td>
+          </td> */}
         </tr>
         {/* <tr>
           <td>

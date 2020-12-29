@@ -14,6 +14,7 @@ import { menuStore } from "../menu/menuStore";
 // import { Link } from "react-router-dom";
 // import { DateRangePicker } from "rsuite";
 import { notify } from './../../common/notify/NotifyService';
+import { Link } from 'react-router-dom';
 
 interface RawSellerProps {
   history: { push: (path: string) => any };
@@ -124,7 +125,13 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       ),
     },
     { title: "Update At", dataIndex: "updated_at"},
-    // { title: "Crawl Status", dataIndex: "status"},
+    { title: "Crawled ? ", dataIndex: "is_crawled",
+      render: (value: boolean) => {
+        return (
+          !value ? <p>Crawling</p> : <p> Crawled</p>
+        );
+      }
+    },
   ]; 
 
   onChange = (page: number) => {
@@ -216,6 +223,11 @@ export default class RawSeller extends Component<RawSellerProps, any> {
             <i className="fas fa-download" style={{fontSize: "30px", cursor: "pointer"}}></i>
           </div>
           <div className="right-option">
+            <Link to="/crawling-addition">
+              <Button type="primary" style={{ margin: "10px"}}>
+                Add
+              </Button>
+            </Link>
             <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.handleCrawl}>
               Crawl
             </Button>
