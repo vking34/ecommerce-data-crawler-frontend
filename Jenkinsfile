@@ -46,15 +46,17 @@ node {
                         rsync -aurv ${dockerComposeDevFile} ${remote.host}::chozoi-apps/${project}/
                         export IMAGE_BUILD=${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
                         ssh -o StrictHostKeyChecking=no ${remote.user}@${remote.host} 'export IMAGE_BUILD=${imageName}:${env.BRANCH_NAME}-build-${buildNumber} && cd /chozoi/${project}/ && docker-compose -f ${dockerComposeDevFile} down && docker-compose -f ${dockerComposeDevFile} up -d'
-                        k8sctl _deploy_rancher_dev ${k8sCluster} ${project}
+                        #k8sctl _deploy_rancher_dev ${k8sCluster} ${project}
                     """
                 }
                 break
             case 'master':
-                stage('deploy k8s') {
+                stage('push docker-compose file') {
                     sh """
+                        rsync -aurv ${dockerComposeDevFile} ${remote.host}::chozoi-apps/${project}/
                         export IMAGE_BUILD=${imageName}:${env.BRANCH_NAME}-build-${buildNumber}
-                        k8sctl _deploy_rancher_prod ${k8sCluster} ${project}
+                        ssh -o StrictHostKeyChecking=no ${remote.user}@${remote.host} 'export IMAGE_BUILD=${imageName}:${env.BRANCH_NAME}-build-${buildNumber} && cd /chozoi/${project}/ && docker-compose -f ${dockerComposeDevFile} down && docker-compose -f ${dockerComposeDevFile} up -d'
+                        #k8sctl _deploy_rancher_dev ${k8sCluster} ${project}
                     """
                 }
                 break
