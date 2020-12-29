@@ -77,7 +77,10 @@ export default class ModalProduct extends Component<any> {
   cancelEditDetail = async () => {
     this.editInfoProduct = false;
   // shopDetailStore.handleModal = false;
-}
+  }
+  handleImg = (e: any) => {
+    console.log("e : ", e);
+  }
   render() {
     return ( 
       <React.Fragment>
@@ -103,7 +106,7 @@ export default class ModalProduct extends Component<any> {
                 <div className="img-content-product">
                   <div className="imgs">
                     {item?.images.map((item: any, index: number) => (
-                      <img src={item.image_url} alt="img" key={index} />
+                      <img src={item.image_url} alt="img" key={index} onClick={this.handleImg} />
                     ))}
                   </div>
                   <div className="content-detail-product">
