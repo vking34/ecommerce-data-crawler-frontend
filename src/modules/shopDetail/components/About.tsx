@@ -140,7 +140,7 @@ export default class About extends Component<any, any> {
       shopDetailStore.editDetail();
     }
   }
-  editDetail = async () => {
+  cancelEditDetail = async () => {
       const resultApi = await callApi(
         `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}`,
         "GET",
@@ -168,7 +168,7 @@ export default class About extends Component<any, any> {
               <Button type="primary" style={{margin: "5px 10px"}} onClick={this.saveChangeInfo} >
                 Save
               </Button>
-              <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={this.editDetail}>
+              <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={this.cancelEditDetail}>
               {/* <Button type="primary" style={{backgroundColor: "#f54b24", margin: "5px 10px"}} onClick={shopDetailStore.editDetail}> */}
                 Cancel
               </Button>

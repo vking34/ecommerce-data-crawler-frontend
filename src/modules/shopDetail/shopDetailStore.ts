@@ -23,7 +23,7 @@ class ShopDetailStore {
   @observable pageSizeProducts: number = 10;
   @observable currentPage: number = 1;
   @observable totalPage: number = 1;
-  @observable totalProducts: number = 1;
+  @observable totalProducts: number = 0;
   @observable selectedRowKeys: string[] = [];
   @observable handleModal: boolean = false;
   @observable product_id: string = "";
@@ -42,6 +42,12 @@ class ShopDetailStore {
   updateDetailShop = (keyValue: string, newValue: string) => {
     this.info = {
       ...this.info,
+      [keyValue]: newValue
+    };
+  }
+  updateDetailProduct = (keyValue: string, newValue: string) => {
+    this.infoProducts = {
+      ...this.infoProducts,
       [keyValue]: newValue
     };
   }
