@@ -24,7 +24,7 @@ export default class About extends Component<any, any> {
           { shopDetailStore.edit && title !== "Register Time" ? 
             <Input placeholder={title} name={name} defaultValue={content} onChange={this.handleInput} />
             :
-            <span> {content} </span> 
+            <span> {content ? content : "null"} </span> 
           }
         </p> :
         <p> 
@@ -61,7 +61,7 @@ export default class About extends Component<any, any> {
               />
             </Input.Group> 
             :
-            <span> {content} </span> 
+            <span> {content ? content : "null"} </span> 
           }
       </p>
     )
@@ -69,6 +69,12 @@ export default class About extends Component<any, any> {
   elementListPhone = (title: string, content: any, name: string) => {
     return (
       <React.Fragment>
+        {shopDetailStore.info?.phone_numbers !== undefined && shopDetailStore.info?.phone_numbers.length === 0 ?
+          <p>
+            <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
+            <span>Chưa có số điện thoại </span>
+          </p>
+        :
         <p>
           <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
           <div className="dropdown show-dropdown option-main open">
@@ -91,6 +97,7 @@ export default class About extends Component<any, any> {
                 </ul>
               </div>
         </p>
+        }
       </React.Fragment>
     )
   }

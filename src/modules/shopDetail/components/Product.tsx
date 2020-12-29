@@ -13,6 +13,7 @@ import ModalProduct from "./ModalProduct";
 export default class Product extends Component<any> {
 
   componentDidMount() {
+    console.log("đi mount ");
     this.requestAPI();
   }
   componentWillUnmount(){

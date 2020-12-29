@@ -15,7 +15,7 @@ export default class ModalProduct extends Component<any> {
     return(
       <div className="modal-info">
         <h3 style={{marginBottom: "0"}}>{title}</h3> 
-        {this.editInfoProduct ? 
+        {this.editInfoProduct && name !== "price" && name !== "sale_price" && name !== "in_quantity" ? 
         <Input defaultValue={content} placeholder={title} name={name} onChange={this.handleInput} />
         : 
         <p>{content ? content : "null"}</p>
@@ -75,17 +75,8 @@ export default class ModalProduct extends Component<any> {
     }
   }
   cancelEditDetail = async () => {
-    // const resultApi = await callApi(
-    //   `v1/crawlers/shopee/converted-shops/${shopDetailStore.id}`,
-    //   "GET",
-    //   {},
-    //   false
-    //   )
-
-    // if (resultApi.result.status === 200) {
-    //   shopDetailStore.info = resultApi.result.data;
-    // }
-  shopDetailStore.handleModal = false;
+    this.editInfoProduct = false;
+  // shopDetailStore.handleModal = false;
 }
   render() {
     return ( 
