@@ -1,0 +1,12 @@
+#!/bin/sh -eu
+
+cat <<EOF
+window.REACT_APP_PORT=${PORT};
+window.API_DOMAIN="${API_DOMAIN}";
+window.GA="${GA}";
+window.SENTRY_DSN="${SENTRY_DSN}";
+window.SENTRY_ENVIRONMENT="${SENTRY_ENVIRONMENT}";
+window.GTM="${GTM}";
+window.FIREBASE_CONFIG="${FIREBASE_CONFIG}";
+window.FIREBASE_KEY_PUBLIC="${FIREBASE_KEY_PUBLIC}";
+EOF

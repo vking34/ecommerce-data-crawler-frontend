@@ -1,0 +1,16 @@
+version: "3"
+services:
+  api:
+    image: "${IMAGE_BUILD}"
+    ports:
+      - 9000:9000
+    environment:
+      - PORT=9000
+      - API_DOMAIN=https://api.crawler-admin.chozoi.com
+      - GA=
+      - SENTRY_DSN=
+      - SENTRY_ENVIRONMENT=
+      - GTM=
+      - FIREBASE_CONFIG=
+      - FIREBASE_KEY_PUBLIC=
+      - ROBOTS_FILE_NAME=dev_robots.txt
