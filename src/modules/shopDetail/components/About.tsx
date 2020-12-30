@@ -50,12 +50,12 @@ export default class About extends Component<any, any> {
       <p>
         <span className="span-title"><i className="mdi mdi-crosshairs-gps"/>{title}</span> 
           { shopDetailStore.edit ? 
-            <Input.Group compact style={{margin: "10px", width: "70%"}} >
+            <Input.Group compact style={{margin: "10px", width: "70%"}}>
               <AutoComplete
                 value= {content}
                 onChange={this.handleInputMainPhone}
                 style={{ width: '70%' }}
-                placeholder="main phone"
+                placeholder="Main phone"
                 options={this.listPhone}
                 // options={[{ value: 'text 1' }, { value: 'text 2' }]}
               />
@@ -194,8 +194,8 @@ export default class About extends Component<any, any> {
             {this.elementDetail("Description", shopDetailStore.info?.description, "description")}
             {this.elementDetail("Register Time", shopDetailStore.info?.created_at, "created_at")}
           </td>
-          {/* <td>
-          </td> */}
+          <td>
+          </td>
         </tr>
         {/* <tr>
           <td>
