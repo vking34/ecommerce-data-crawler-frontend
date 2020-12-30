@@ -18,6 +18,7 @@ class RawSellerStore {
   @observable selectedRowKeys: any = [];
   @observable phone: any = "ALL";
   @observable totalShops: number = 0;
+  @observable loading: boolean = false;
   getDate = (data: any) => {
     data.map((item: any, key: number) => {
       // var dateStr = JSON.parse("\"2014-01-01T23:28:56.782Z\"");

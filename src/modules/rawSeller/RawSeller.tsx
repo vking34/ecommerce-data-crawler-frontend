@@ -58,6 +58,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
 
   requestAPI = async () => {
     if(this.props.location.search){
+      rawSellerStore.loading = true;
       const params = new myRawSellerParam(this.props.location.search)
       rawSellerStore.phone = params.getPhone;
       rawSellerStore.currentPage = params.getPage;
@@ -75,6 +76,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
         rawSellerStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / rawSellerStore.pageSize);
         // console.log("data : ", resultApi.result.data.pagination.total_elements);
       }
+      rawSellerStore.loading = false;
     }else {
       this.props.history.push(`/raw-seller?page=${rawSellerStore.currentPage}&limit=${rawSellerStore.pageSize}&phone_numbers=${rawSellerStore.phone}`)  
     }
@@ -128,7 +130,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
     { title: "Crawled ? ", dataIndex: "is_crawled",
       render: (value: boolean) => {
         return (
-          !value ? <p>Crawling</p> : <p> Crawled</p>
+          !value ? <p style={{margin: "0"}}>Crawling</p> : <p style={{margin: "0"}}> Crawled</p>
         );
       }
     },
@@ -181,6 +183,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
       selectedRowKeys: rawSellerStore.selectedRowKeys,
     }
     return (
+      !rawSellerStore.loading ? 
       <React.Fragment>
         <div className="nav-table">
           <div className="left-option">
@@ -228,7 +231,7 @@ export default class RawSeller extends Component<RawSellerProps, any> {
                 Add
               </Button>
             </Link>
-            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.handleCrawl}>
+            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#299555",}} disabled={this.dataPost.length <= 0} onClick={this.handleCrawl}>
               Crawl
             </Button>
           </div>
@@ -238,6 +241,12 @@ export default class RawSeller extends Component<RawSellerProps, any> {
         <Table rowSelection={rowSelection} dataSource={rawSellerStore.data} columns={this.columns} bordered pagination={false} />
         <Pagination current={rawSellerStore.currentPage} onChange={this.onChange} total={rawSellerStore.totalPage * 10} showSizeChanger={false}/>
       </React.Fragment> 
+      : 
+      <React.Fragment>
+        <div className="loading d-flex-content" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "142px"}}>
+          <img src="/assets/img/loading_data.gif" style={{width: "10%"}} alt="loading"/>
+        </div>
+      </React.Fragment>
     );
   }
 }

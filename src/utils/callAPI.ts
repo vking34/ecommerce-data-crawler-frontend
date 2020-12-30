@@ -26,7 +26,7 @@ const refreshAuthLogic = failedRequest => axios.post(Constants.API_URL + '/v1/au
 });
 
 export const callApi = async (endpoint: string, method: any, body: any, isNeedAuth: boolean = true) => {
-  // console.log("call api");
+  const source = axios.CancelToken.source();
   var response: response = {
     result: {
       data: null,
@@ -48,10 +48,15 @@ export const callApi = async (endpoint: string, method: any, body: any, isNeedAu
       // url: `${Config.API_URL}${endpoint}`,
       headers: newHeaders,
       data: body,
+      cancelToken: source.token
     })
     response.result.data = result.data;
     response.result.status = result.status;
   } catch (error) {
+    if (axios.isCancel(error)) {
+      console.log("request cancelled!"); //neu request bi huy thi log ra
+      response.result.data = {};
+    }
     // console.log("error : ", error); 
     response.error = error.response?.data.message;
     response.result.status = error.response?.status

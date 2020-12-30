@@ -62,7 +62,7 @@ export default class ShopDetail extends Component<any> {
           <div className={shopDetailStore.showAbout ? "about active" : "about" } onClick={() => shopDetailStore.showAbout = true}>ABOUT</div>
           <div className={shopDetailStore.showAbout ? "product" : " product active" } onClick={this.showProducts}>PRODUCT</div>
  
-          {shopDetailStore.showAbout && 
+          {shopDetailStore.showAbout &&  
             <React.Fragment>
               <Button type="primary" className="btn-back" onClick={() => this.props.history.push("/crawled-sellers")}>
                 Back

@@ -6,18 +6,18 @@ import { shopDetailStore } from './../shopDetailStore';
 import { callApi } from '../../../utils/callAPI';
 import { notify } from '../../../common/notify/NotifyService';
 import ModalProduct from "./ModalProduct";
+import { observable } from 'mobx';
 // interface ProductProps {
 //   infoProducts: any
 // }
 @observer
 export default class Product extends Component<any> {
 
+  @observable private loading: boolean = false;
   componentDidMount() {
     this.requestAPI();
   }
-  componentWillUnmount(){
-  }
-  
+
   columns: any = [
     { title: "Image", dataIndex: "images", width: "100px",
       render: (src: any) => (
@@ -80,19 +80,21 @@ export default class Product extends Component<any> {
     this.requestAPI();
   }
   requestAPI = async () => {
-      const resultApi = await callApi(
-        `v1/crawlers/shopee/converted-shops/${this.props.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
-        "GET",
-        {},
-        false
-      )
-      if (resultApi.result.status === 200) {
-        shopDetailStore.getDate(resultApi.result.data.data);
-        shopDetailStore.infoProducts = resultApi.result.data.data;
-        shopDetailStore.totalProducts = resultApi.result.data.pagination.total_elements;
-        shopDetailStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts);
-        // console.log("data img : ", resultApi.result.data.images);
-      }
+    this.loading = true;
+    const resultApi = await callApi(
+      `v1/crawlers/shopee/converted-shops/${this.props.id}/products?page=${shopDetailStore.currentPage}&limit=${shopDetailStore.pageSizeProducts}`,
+      "GET",
+      {},
+      false
+    )
+    if (resultApi.result.status === 200) {
+      shopDetailStore.getDate(resultApi.result.data.data);
+      shopDetailStore.infoProducts = resultApi.result.data.data;
+      shopDetailStore.totalProducts = resultApi.result.data.pagination.total_elements;
+      shopDetailStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts);
+      // console.log("data img : ", resultApi.result.data.images);
+    }
+    this.loading = false;
   }
   handleApprove = async () => {
     const resultApi = await callApi(
@@ -152,10 +154,20 @@ export default class Product extends Component<any> {
             </Button>
           </div>
         </div>
-        <p>Total : {shopDetailStore.totalProducts} products</p>
-        {shopDetailStore.handleModal && <ModalProduct isModalVisible={shopDetailStore.handleModal} supportFixDetail={this.supportFixDetail} /> }
-        <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={shopDetailStore.infoProducts} columns={this.columns} pagination={false}/>
-        <Pagination current={shopDetailStore.currentPage} onChange={this.onChange} total={shopDetailStore.totalPage * 10} showSizeChanger={false} />
+        {!this.loading ? 
+          <React.Fragment>
+            <p>Total : {shopDetailStore.totalProducts} products</p>
+            {shopDetailStore.handleModal && <ModalProduct isModalVisible={shopDetailStore.handleModal} supportFixDetail={this.supportFixDetail} /> }
+            <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={shopDetailStore.infoProducts} columns={this.columns} pagination={false}/>
+            <Pagination current={shopDetailStore.currentPage} onChange={this.onChange} total={shopDetailStore.totalPage * 10} showSizeChanger={false} />
+          </React.Fragment>
+          :
+          <React.Fragment>
+            <div className="loading d-flex-content" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "142px"}}>
+              <img src="/assets/img/loading_data.gif" style={{width: "10%"}} alt="loading"/>
+            </div>
+          </React.Fragment>
+        }
       </React.Fragment> 
     );
   }

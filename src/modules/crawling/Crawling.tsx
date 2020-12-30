@@ -33,12 +33,13 @@ export default class Crawling extends Component<CrawlingProps, any> {
   }
   requestAPI = async () => {
     this.dataSend(crawlingStore.shops); 
-    console.log("data : ", this.dataPost); 
+    // console.log("data : ", this.dataPost); 
+    crawlingStore.loading = true;
     const resultApi = await callApi(
       `v1/crawlers/shopee/converted-shops`,
       "POST",
       {
-        shop_links: this.dataPost
+        "shop_links": this.dataPost
       },
       false
       );
@@ -55,12 +56,17 @@ export default class Crawling extends Component<CrawlingProps, any> {
       notify.show(`Đường Link không hợp lệ !!! `, "warning");
       crawlingStore.cancel();
     }
+    crawlingStore.loading = false;
   };
   change = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if(event.key ==="Enter"){
       this.handleAddItem();
       // this.inputRef.current!.focus();
     }
+  }
+  cancel = () => {
+    this.dataPost = [];
+    crawlingStore.cancel();
   }
   handleAddItem = () => {
     crawlingStore.items ++;
@@ -91,7 +97,8 @@ export default class Crawling extends Component<CrawlingProps, any> {
   render() {
     const length = crawlingStore.itemsMap.length;
     return (
-      <React.Fragment>  
+      !crawlingStore.loading ?
+      <React.Fragment> 
         <Upload {...this.propsUpload} className="load-file">
           <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>
@@ -116,12 +123,18 @@ export default class Crawling extends Component<CrawlingProps, any> {
           <hr></hr>
         {crawlingStore.activeModal && <ModalCrawling rawShop={this.arrayRawShop} convertedShop={this.arrayConvertedShop}/> }  
         <Button type="primary" size={"large"} style={{margin : "10px", width: "99px"}} onClick={this.requestAPI} disabled={crawlingStore.valid}>
-          Insert
+          Save
         </Button>
-        <Button type="primary" size={"large"} style={{margin : "10px", width: "99px", backgroundColor: "#f7a922"}} onClick={crawlingStore.cancel}>
+        <Button type="primary" size={"large"} style={{margin : "10px", width: "99px", backgroundColor: "#f7a922"}} onClick={this.cancel}>
           Cancel
         </Button>
       </React.Fragment> 
+      :
+      <React.Fragment>
+        <div className="loading d-flex-content" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "142px"}}>
+          <img src="/assets/img/loading_data.gif" style={{width: "10%"}} alt="loading"/>
+        </div>
+      </React.Fragment>
     )
   }
 }

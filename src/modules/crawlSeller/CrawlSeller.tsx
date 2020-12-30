@@ -77,6 +77,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
   requestAPI = async () => {
     let url: string = "/"; 
     if(this.props.location.search){
+      crawlSellerStore.loading = true;
       const params = new myCrawlSellerParam(this.props.location.search)
       crawlSellerStore.phone = params.getPhone;
       crawlSellerStore.state = params.getState;
@@ -99,6 +100,7 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
         crawlSellerStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / crawlSellerStore.pageSize);
         // console.log("data : ", resultApi.result.data.data);
       }
+      crawlSellerStore.loading = false;
     }else {
       this.props.history.push(`/crawled-sellers?page=${crawlSellerStore.currentPage}&limit=${crawlSellerStore.pageSize}&phone_numbers=${crawlSellerStore.phone}`)
     }
@@ -226,16 +228,27 @@ export default class CrawlSeller extends Component<CrawlSellerProps, any> {
             </Button> */}
           </div>
           <div className="right-option">
-            <Button type="primary" style={{border: "none",margin: "10px",backgroundColor: "#42ed2f",}} onClick={this.handleApprove}>
-              Approve
-            </Button>
+              <Button type="primary" disabled={this.dataPost.length <= 0 }
+                style={{border: "none",margin: "10px"}} onClick={this.handleApprove}>
+                Approve
+              </Button>
             <i className="fas fa-download" style={{fontSize: "30px", margin: "10px"}}></i>
           </div>
         </div>
-        <p style={{margin: "10px"}}>Total : {crawlSellerStore.totalShops} shops</p>
-        {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false}/> */}
-        <Table rowSelection={rowSelection}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
-        <Pagination current={crawlSellerStore.currentPage} onChange={this.onChange} total={crawlSellerStore.totalPage * 10} showSizeChanger={false} />
+        {crawlSellerStore.loading ? 
+        <React.Fragment>
+          <div className="loading d-flex-content" style={{display: "flex", justifyContent: "center", alignItems: "center", marginTop: "142px"}}>
+            <img src="/assets/img/loading_data.gif" style={{width: "10%"}} alt="loading"/>
+          </div>
+        </React.Fragment>
+        :
+        <React.Fragment>
+          <p style={{margin: "10px"}}>Total : {crawlSellerStore.totalShops} shops</p>
+          {/* <Table rowSelection={{...this.rowSelection}} dataSource={this.data} columns={this.columns} bordered pagination={false}/> */}
+          <Table rowSelection={rowSelection}  dataSource={crawlSellerStore.data} columns={this.columns} bordered pagination={false}/>
+          <Pagination current={crawlSellerStore.currentPage} onChange={this.onChange} total={crawlSellerStore.totalPage * 10} showSizeChanger={false} />
+        </React.Fragment>
+        }
       </React.Fragment>
     );
   }

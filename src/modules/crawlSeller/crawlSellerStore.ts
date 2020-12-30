@@ -12,6 +12,7 @@ class CrawlSellerStore {
   @observable selectedRowKeys: any = [];
   @observable totalShops: number = 0; 
   @observable phone: any = "ALL";
+  @observable loading: boolean = false;
   
   getDate = (data: any) => {
     data.map((item: any, key: number) => {

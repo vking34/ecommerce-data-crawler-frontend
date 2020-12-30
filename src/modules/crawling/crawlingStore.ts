@@ -7,7 +7,7 @@ class CrawlingStore {
   @observable data: any = [];
   @observable activeModal: boolean= false;
   @observable valid: boolean = true;
-
+  @observable loading: boolean = false;
   validBtnSave = () => {
     if(Object.keys(this.shops).length < 1){
       this.valid = true;
