@@ -1,1 +1,1 @@
-window.REACT_APP_BASE_URL = "https://api.chozoi.com/";
+window.API_DOMAIN = "https://api.crawler-admin.chozoi.com/";
