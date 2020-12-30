@@ -8,6 +8,7 @@ import { callApi } from '../../utils/callAPI';
 import { notify } from '../../common/notify/NotifyService';
 import { UploadOutlined } from '@ant-design/icons';
 import { menuStore } from '../menu/menuStore';
+import ModalCrawling from './components/ModalCrawling';
 
 interface CrawlingProps {
   history: { push: (path: string) => any };
@@ -18,6 +19,8 @@ interface CrawlingProps {
 export default class Crawling extends Component<CrawlingProps, any> {
   private readonly inputRef: React.RefObject<any> = createRef();
   private dataPost: string[] = [];
+  arrayRawShop: any = [];
+  arrayConvertedShop: any = [];
   componentDidMount() {
     // this.inputRef.current!.focus();
     menuStore.changeOption("1Crawling");
@@ -39,9 +42,17 @@ export default class Crawling extends Component<CrawlingProps, any> {
       },
       false
       );
+    // console.log("status : ",resultApi.result.status );
+    this.dataPost = [];
     if (resultApi.result.status === 200) {
-      crawlingStore.data = resultApi.result.data.data;
-      notify.show(`Crawling shops ... ! `, "success");
+      crawlingStore.data = resultApi.result.data;
+      // notify.show(`Crawling shops ... ! `, "success");
+      this.arrayRawShop = resultApi.result.data.rawShop;
+      this.arrayConvertedShop = resultApi.result.data.convertedShop;
+      crawlingStore.activeModal = true;
+      crawlingStore.cancel();
+    }else {
+      notify.show(`Đường Link không hợp lệ !!! `, "warning");
       crawlingStore.cancel();
     }
   };
@@ -51,6 +62,10 @@ export default class Crawling extends Component<CrawlingProps, any> {
       // this.inputRef.current!.focus();
     }
   }
+  // changeProps = () => {
+  //   this.arrayRawShop = [];
+  //   this.arrayConvertedShop = [];
+  // }
   handleAddItem = () => {
     crawlingStore.items ++;
     crawlingStore.itemsMap.push(crawlingStore.items);
@@ -105,8 +120,9 @@ export default class Crawling extends Component<CrawlingProps, any> {
             Add
         </Button>
           <hr></hr>
+        {crawlingStore.activeModal && <ModalCrawling rawShop={this.arrayRawShop} convertedShop={this.arrayConvertedShop}/> }  
         <Button type="primary" size={"large"} style={{margin : "10px", width: "99px"}} onClick={this.requestAPI} disabled={crawlingStore.valid}>
-          Save
+          Insert
         </Button>
         <Button type="primary" size={"large"} style={{margin : "10px", width: "99px", backgroundColor: "#f7a922"}} onClick={crawlingStore.cancel}>
           Cancel

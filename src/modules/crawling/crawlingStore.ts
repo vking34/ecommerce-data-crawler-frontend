@@ -4,8 +4,8 @@ class CrawlingStore {
   @observable itemsMap: number[] = [1];
   @observable items: number = 1;
   @observable shops: any = {};
-  @observable data: string[] = [];
-  // @observable in: string = "";
+  @observable data: any = [];
+  @observable activeModal: boolean= false;
   @observable valid: boolean = true;
 
   validBtnSave = () => {

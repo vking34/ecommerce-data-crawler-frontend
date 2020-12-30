@@ -107,6 +107,9 @@ export default class Product extends Component<any> {
       // console.log("data : ", resultApi.result.data.pagination.total_elements);
     }
   }
+  supportFixDetail = () => {
+    this.requestAPI();
+  }
   render() {
     const rowSelection: any = {
       onChange: this.onSelectChange,
@@ -150,7 +153,7 @@ export default class Product extends Component<any> {
           </div>
         </div>
         <p>Total : {shopDetailStore.totalProducts} products</p>
-        {shopDetailStore.handleModal && <ModalProduct isModalVisible={shopDetailStore.handleModal} /> }
+        {shopDetailStore.handleModal && <ModalProduct isModalVisible={shopDetailStore.handleModal} supportFixDetail={this.supportFixDetail} /> }
         <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={this.props.infoProducts} columns={this.columns} pagination={false}/>
         <Pagination current={shopDetailStore.currentPage} onChange={this.onChange} total={shopDetailStore.totalPage * 10} showSizeChanger={false} />
       </React.Fragment> 
