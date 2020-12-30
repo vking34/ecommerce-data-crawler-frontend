@@ -7,6 +7,9 @@ img {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Courier New', Courier, monospace !important;
 }
+h3, h4, h5, h6 {
+  font-weight: 600;
+}
 i.mdi-crosshairs-gps {
   margin: 5px !important;
 }
@@ -140,6 +143,7 @@ nav a{
       img{
         width: 30%;
         margin: 5px;
+        max-height: 200px;
       }
     }
     .content-detail-product {

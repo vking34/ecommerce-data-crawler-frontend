@@ -77,7 +77,7 @@ export default class ShopDetail extends Component<any> {
         {shopDetailStore.showAbout ? 
           <About/>
           :
-          <Product infoProducts={shopDetailStore.infoProducts} id={shopDetailStore.id} history={this.props.history}/>
+          <Product id={shopDetailStore.id} history={this.props.history}/>
         }
 
         </div>

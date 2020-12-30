@@ -91,7 +91,7 @@ export default class Product extends Component<any> {
         shopDetailStore.infoProducts = resultApi.result.data.data;
         shopDetailStore.totalProducts = resultApi.result.data.pagination.total_elements;
         shopDetailStore.totalPage = Math.ceil(resultApi.result.data.pagination.total_elements / shopDetailStore.pageSizeProducts);
-        // console.log("data : ", resultApi.result.data);
+        // console.log("data img : ", resultApi.result.data.images);
       }
   }
   handleApprove = async () => {
@@ -154,7 +154,7 @@ export default class Product extends Component<any> {
         </div>
         <p>Total : {shopDetailStore.totalProducts} products</p>
         {shopDetailStore.handleModal && <ModalProduct isModalVisible={shopDetailStore.handleModal} supportFixDetail={this.supportFixDetail} /> }
-        <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={this.props.infoProducts} columns={this.columns} pagination={false}/>
+        <Table style={{border: "none !important"}} rowSelection={rowSelection} bordered dataSource={shopDetailStore.infoProducts} columns={this.columns} pagination={false}/>
         <Pagination current={shopDetailStore.currentPage} onChange={this.onChange} total={shopDetailStore.totalPage * 10} showSizeChanger={false} />
       </React.Fragment> 
     );

@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { Component } from 'react'
 import { Button, Input, Modal } from 'antd';
 import { observer } from 'mobx-react';
@@ -8,7 +9,7 @@ import { notify } from './../../../common/notify/NotifyService';
 
 @observer
 export default class ModalProduct extends Component<any> {
-  
+  private arrImg: any = [];
   @observable private editInfoProduct: boolean = false;
   currentProduct: any = {};
   showInfoDetail = (title: string, name: string, content: any) => {
@@ -38,7 +39,8 @@ export default class ModalProduct extends Component<any> {
       "PUT",
       {
         "packing_size": this.currentProduct.packing_size,
-        "images": this.currentProduct.images,
+        "images": this.arrImg,
+        // "images": this.currentProduct.images,
         "description": this.currentProduct.description,
         "type": this.currentProduct.type,
         "condition": this.currentProduct.condition,
@@ -76,10 +78,24 @@ export default class ModalProduct extends Component<any> {
   }
   cancelEditDetail = async () => {
     this.editInfoProduct = false;
+    this.arrImg = [];
   // shopDetailStore.handleModal = false;
   }
-  handleImg = (e: any) => {
-    console.log("e : ", e);
+  handleImg = (index: number) => {
+    let previewImages: any = document.getElementsByClassName('img-preview');
+    // console.log("img : ", previewImages[index].src);
+    if(previewImages[index].style.opacity == 0.3){
+      this.arrImg.splice(index, 0 ,{
+        "image_url" : previewImages[index].src, 
+        "sort": index
+      });
+      previewImages[index].style.opacity = 1;
+    } else {
+      previewImages[index].style.opacity = 0.3;
+      this.arrImg.splice(index, 1 );
+    }
+    // console.log("data img : ", this.arrImg); 
+    
   }
   render() {
     return ( 
@@ -103,22 +119,28 @@ export default class ModalProduct extends Component<any> {
             if(item.product_id === shopDetailStore.product_id){
               this.currentProduct = item;
               return (
-                <div className="img-content-product">
-                  <div className="imgs">
-                    {item?.images.map((item: any, index: number) => (
-                      <img src={item.image_url} alt="img" key={index} onClick={this.handleImg} />
-                    ))}
+                <React.Fragment> 
+                  {this.editInfoProduct && <h3 style={{fontWeight: 600}}>Chọn hình ảnh</h3>}
+                  <div className="img-content-product">
+                    <div className="imgs">
+                      {item?.images.map((item: any, index: number) => (
+                        this.editInfoProduct ? 
+                        <img src={item.image_url} alt="img" key={index} className="img-preview" style={{opacity: "0.3",}} onClick={(e) => this.handleImg(index)} />
+                        : 
+                        <img src={item.image_url} alt="img" key={index} style={{}}  className="img-preview"/>
+                      ))}
+                    </div>
+                    <div className="content-detail-product">
+                      {this.showInfoDetail("Tên sản phẩm ","name", item?.name)}
+                      {this.showInfoDetail("Tình trạng  ", "condition",item?.condition)}
+                      {this.showInfoDetail("Cận nặng  ","weight", item?.weight)}
+                      {this.showInfoDetail("Kiểu ","type", item?.type)}
+                      {this.showInfoDetail("Giá gốc", "price" ,item?.variants[0].price)}
+                      {this.showInfoDetail("Giá sale ", "sale_price", item?.variants[0].sale_price)}
+                      {this.showInfoDetail("Số lượng ",  "in_quantity",item?.variants[0].inventory.in_quantity)}
+                    </div>
                   </div>
-                  <div className="content-detail-product">
-                    {this.showInfoDetail("Tên sản phẩm ","name", item?.name)}
-                    {this.showInfoDetail("Tình trạng  ", "condition",item?.condition)}
-                    {this.showInfoDetail("Cận nặng  ","weight", item?.weight)}
-                    {this.showInfoDetail("Kiểu ","type", item?.type)}
-                    {this.showInfoDetail("Giá gốc", "price" ,item?.variants[0].price)}
-                    {this.showInfoDetail("Giá sale ", "sale_price", item?.variants[0].sale_price)}
-                    {this.showInfoDetail("Số lượng ",  "in_quantity",item?.variants[0].inventory.in_quantity)}
-                  </div>
-                </div>
+                </React.Fragment>
               )
             }else {
                 return null

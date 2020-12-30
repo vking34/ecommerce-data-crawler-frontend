@@ -1,6 +1,6 @@
 import { Button, Input, message, Upload } from 'antd'
   import { observer } from 'mobx-react'
-import React, { Component, createRef } from 'react'
+import React, { Component } from 'react'
 
 import "./style.scss"
 import {crawlingStore} from "./crawlingStore"; 
@@ -17,7 +17,7 @@ interface CrawlingProps {
 
 @observer
 export default class Crawling extends Component<CrawlingProps, any> {
-  private readonly inputRef: React.RefObject<any> = createRef();
+  // private readonly inputRef: React.RefObject<any> = createRef();
   private dataPost: string[] = [];
   arrayRawShop: any = [];
   arrayConvertedShop: any = [];
@@ -33,7 +33,7 @@ export default class Crawling extends Component<CrawlingProps, any> {
   }
   requestAPI = async () => {
     this.dataSend(crawlingStore.shops); 
-    // console.log("data : ", this.dataPost);
+    console.log("data : ", this.dataPost); 
     const resultApi = await callApi(
       `v1/crawlers/shopee/converted-shops`,
       "POST",
@@ -62,10 +62,6 @@ export default class Crawling extends Component<CrawlingProps, any> {
       // this.inputRef.current!.focus();
     }
   }
-  // changeProps = () => {
-  //   this.arrayRawShop = [];
-  //   this.arrayConvertedShop = [];
-  // }
   handleAddItem = () => {
     crawlingStore.items ++;
     crawlingStore.itemsMap.push(crawlingStore.items);
@@ -102,8 +98,6 @@ export default class Crawling extends Component<CrawlingProps, any> {
         {crawlingStore.itemsMap.map((item, index) => {
           return (
             <div className="item" key={index} style={{width : "70%"}}>
-              {/* {item} - {crawlingStore.shops[item]} */}
-              {/* {length} */}
               {index + 1 === length ? 
               // {index + 1 === crawlingStore.itemsMap.length ? 
                 <Input name={item.toString()} placeholder="https:// ..." style={{margin: "10px "}} autoFocus

@@ -26,6 +26,7 @@ const refreshAuthLogic = failedRequest => axios.post(Constants.API_URL + '/v1/au
 });
 
 export const callApi = async (endpoint: string, method: any, body: any, isNeedAuth: boolean = true) => {
+  // console.log("call api");
   var response: response = {
     result: {
       data: null,
