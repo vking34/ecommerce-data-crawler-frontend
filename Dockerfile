@@ -17,6 +17,10 @@ WORKDIR /
 COPY --from=build /app/build /usr/share/nginx/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/nginx.conf /etc/nginx/conf.d
+COPY docker-entrypoint.sh generate_config_js.sh /
+COPY robots /robots
+RUN chmod +x docker-entrypoint.sh generate_config_js.sh
 
-EXPOSE 3000
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+EXPOSE 9000
+
+ENTRYPOINT ["/docker-entrypoint.sh"]

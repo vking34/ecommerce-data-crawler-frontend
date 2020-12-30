@@ -6,11 +6,5 @@ services:
       - 9000:9000
     environment:
       - PORT=9000
-      - API_DOMAIN=https://api.crawler-admin.chozoi.com
-      - GA=
-      - SENTRY_DSN=
-      - SENTRY_ENVIRONMENT=
-      - GTM=
-      - FIREBASE_CONFIG=
-      - FIREBASE_KEY_PUBLIC=
+      - API_DOMAIN=https://api.crawler-admin.chozoi.com/
       - ROBOTS_FILE_NAME=dev_robots.txt
