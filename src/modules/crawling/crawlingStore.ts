@@ -6,6 +6,7 @@ class CrawlingStore {
   @observable shops: any = {};
   @observable data: any = [];
   @observable activeModal: boolean= false;
+  @observable activeModalFile: boolean= false;
   @observable valid: boolean = true;
   @observable loading: boolean = false;
   validBtnSave = () => {

@@ -9,6 +9,7 @@ import { notify } from '../../common/notify/NotifyService';
 import { UploadOutlined } from '@ant-design/icons';
 import { menuStore } from '../menu/menuStore';
 import ModalCrawling from './components/ModalCrawling';
+import ModalFile from './components/ModalFile';
 
 interface CrawlingProps {
   history: { push: (path: string) => any };
@@ -19,6 +20,7 @@ interface CrawlingProps {
 export default class Crawling extends Component<CrawlingProps, any> {
   // private readonly inputRef: React.RefObject<any> = createRef();
   private dataPost: string[] = [];
+  rsFile: any = [];
   arrayRawShop: any = [];
   arrayConvertedShop: any = [];
   componentDidMount() {
@@ -79,15 +81,16 @@ export default class Crawling extends Component<CrawlingProps, any> {
   }
   propsUpload: any = {
     name: 'file',
-    // action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+    action: 'http://192.168.1.54:3003/v1/crawlers/shopee/converted-shops-file?file',
     // headers: {
     //   authorization: 'authorization-text',
     // },
     onChange(info: any) {
-      if (info.file.status !== 'uploading') {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === 'done') {
+      console.log("info : ", info.fileList[0].response);
+      if (info.file.status === 'done' && info.fileList[0].response != undefined) {
+        console.log("check ");
+        // this.rsFile = info.fileList[0].response;
+        crawlingStore.activeModalFile = true;
         message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === 'error') {
         message.error(`${info.file.name} file upload failed.`);
@@ -122,6 +125,7 @@ export default class Crawling extends Component<CrawlingProps, any> {
         </Button>
           <hr></hr>
         {crawlingStore.activeModal && <ModalCrawling rawShop={this.arrayRawShop} convertedShop={this.arrayConvertedShop}/> }  
+        {crawlingStore.activeModalFile && <ModalFile rsFile={this.rsFile} convertedShop={this.arrayConvertedShop}/> }  
         <Button type="primary" size={"large"} style={{margin : "10px", width: "99px"}} onClick={this.requestAPI} disabled={crawlingStore.valid}>
           Save
         </Button>
