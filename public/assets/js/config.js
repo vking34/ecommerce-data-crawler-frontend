@@ -1,2 +1,2 @@
-window.REACT_APP_BASE_URL = "http://192.168.1.54:3003/";
-// window.REACT_APP_BASE_URL = "https://api.chozoi.com/";
+// window.API_DOMAIN = "https://api.crawler-admin.chozoi.com/";
+window.API_DOMAIN = "http://192.168.1.54:3003/";
