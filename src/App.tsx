@@ -8,20 +8,30 @@ import Header from "./modules/header/Header";
 // import Footer from "./modules/footer/Footer";
 import Menu from "./modules/menu/Menu";
 import { commonStore } from "./common/commonStore";
-import LoginPage from "./modules/authen/LoginPage";
-import {ListRouter} from "./modules/listRouter/ListRouter";
+// import LoginPage from "./modules/authen/LoginPage";
+import {ListRouter, RouterLogin} from "./modules/listRouter/ListRouter";
 import NotifyComponent from "./common/notify/NotifyComponent";
 import { menuStore } from "./modules/menu/menuStore";
+import { observer } from "mobx-react";
 
+import StorageService from "./utils/storageService";
+
+@observer
 export default class App extends Component {
 
   private checkBody =React.createRef<HTMLDivElement>();
 
   componentDidMount() {
+    // console.log("token : " , StorageService.getToken());
+    if(StorageService.getToken() === null){
+      commonStore.showFormLogin = true;
+    }else {
+      commonStore.showFormLogin =false;
+    }
     document.addEventListener('click', this.handleClickMenu);
   }
   
-  handleClickMenu = (e: any) => {
+  handleClickMenu = (e: any) => { 
     const {target} = e;
     const node = this.checkBody.current;
     if (node) {
@@ -46,7 +56,11 @@ export default class App extends Component {
                 <Menu />
                 <div className="main-panel" ref={this.checkBody}>
                   <div className="content-wrapper">
-                    <ListRouter />
+                    {/* {commonStore.showFormLogin ? 
+                      <RouterLogin />
+                      : */}
+                      <ListRouter /> 
+                    {/* } */}
                   </div>
                   {/* <Footer /> */}
                 </div>
@@ -54,8 +68,11 @@ export default class App extends Component {
             </div>
            </div>
         </Router>
-        : <LoginPage />
-        }
+        :  
+        <Router>
+          <RouterLogin />
+        </Router>
+      }
       </React.Fragment>
       );
   }

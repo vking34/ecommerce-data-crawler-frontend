@@ -10,6 +10,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { menuStore } from '../menu/menuStore';
 import ModalCrawling from './components/ModalCrawling';
 import ModalFile from './components/ModalFile';
+import { observable } from 'mobx';
 
 interface CrawlingProps {
   history: { push: (path: string) => any };
@@ -20,6 +21,7 @@ interface CrawlingProps {
 export default class Crawling extends Component<CrawlingProps, any> {
   // private readonly inputRef: React.RefObject<any> = createRef();
   private dataPost: string[] = [];
+  @observable fileList: any = [];
   rsFile: any = [];
   arrayRawShop: any = [];
   arrayConvertedShop: any = [];
@@ -85,11 +87,13 @@ export default class Crawling extends Component<CrawlingProps, any> {
     // headers: {
     //   authorization: 'authorization-text',
     // },
-    onChange(info: any) {
-      console.log("info : ", info.fileList[0].response);
-      if (info.file.status === 'done' && info.fileList[0].response != undefined) {
-        console.log("check ");
-        // this.rsFile = info.fileList[0].response;
+    onChange: (info: any) => {
+      // console.log("info : ", info.fileList[0].response);
+      this.fileList = [...info.fileList];
+      if (info.file.status === 'done' && info.fileList[0].response !== undefined) {
+        // console.log("check ");
+        this.handleFile(info.fileList[0].response);
+        this.fileList = []
         crawlingStore.activeModalFile = true;
         message.success(`${info.file.name} file uploaded successfully`);
       } else if (info.file.status === 'error') {
@@ -97,12 +101,15 @@ export default class Crawling extends Component<CrawlingProps, any> {
       }
     },
   };
+  handleFile = (data: any) => {
+    this.rsFile = data;
+  }
   render() {
     const length = crawlingStore.itemsMap.length;
     return (
       !crawlingStore.loading ?
       <React.Fragment> 
-        <Upload {...this.propsUpload} className="load-file">
+        <Upload {...this.propsUpload} fileList={this.fileList} className="load-file">
           <Button icon={<UploadOutlined />}>Click to Upload</Button>
         </Upload>
         {crawlingStore.itemsMap.map((item, index) => {

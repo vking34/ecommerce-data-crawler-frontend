@@ -5,7 +5,7 @@ export default class StorageService {
     public static getToken(): string | null{
         return getCookie("accessToken");
     }
-    public static removeToken() {
+    public static removeToken() { 
         eraseCookie("accessToken");
     }
 

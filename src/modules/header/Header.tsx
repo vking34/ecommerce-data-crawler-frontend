@@ -3,10 +3,15 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import {menuStore} from "../menu/menuStore";
+import StorageService from "../../utils/storageService";
 
 export default class Header extends Component {
   private checkHeader =React.createRef<HTMLDivElement>();
 
+  signOut = () => {
+    StorageService.removeToken();
+    window.location.href = "/"; 
+  }
   render() {
     return (
       <nav ref={this.checkHeader} className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style={{backgroundColor: "#EEEEEE"}}>
@@ -41,8 +46,8 @@ export default class Header extends Component {
                   Activity Log
                 </a>
                 <div className="dropdown-divider" />
-                <a className="dropdown-item" href="#">
-                  <i className="mdi mdi-logout mr-2 text-primary" /> Signout
+                <a className="dropdown-item" href="#" onClick={this.signOut}>
+                  <i className="mdi mdi-logout mr-2 text-primary"/> Signout
                 </a>
               </div>
             </li>
