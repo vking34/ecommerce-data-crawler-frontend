@@ -45,7 +45,7 @@ export default class ModalFile extends Component<any> {
     },
     { title: "Type", dataIndex: "is_official_shop",
       render: (check: boolean) => (
-        check ? <p>Official</p> : <p>Nomal</p>
+        check ? <p style={{margin: "0"}}>Official</p> : <p style={{margin: "0"}}>Nomal</p>
       )
     },
     { title: "Create At", dataIndex: "created_at"},
@@ -61,7 +61,7 @@ export default class ModalFile extends Component<any> {
   render() {
     return (
       <Modal visible={crawlingStore.activeModalFile} width={1000} onCancel={this.cancelModal} onOk={this.cancelModal}  >
-            <Table style={{margin: "50px 0"}} dataSource={this.props.rsFile} columns={this.columns} bordered />
+        <Table style={{margin: "50px 0"}} dataSource={this.props.rsFile} columns={this.columns} bordered />
             {/* <Table style={{margin: "10px 0"}} dataSource={this.props.convertedShop} columns={this.columns} bordered pagination={false}/> */}
         {/* <Pagination current={crawlSellerStore.currentPage} onChange={this.onChange} total={crawlSellerStore.totalPage * 10} showSizeChanger={false} /> */}
       </Modal>
